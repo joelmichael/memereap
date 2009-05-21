@@ -7,18 +7,18 @@
 #include "lib/routes.c"
 #include "lib/db.c"
 
-int main(int argc, char** argv) {
-  char* request_uri = getenv("REQUEST_URI");
-  
-  printf("Content-type: text/plain\n\n");
-  printf("REQUEST_URI: %s\n", request_uri);
-  
+int main(int argc, char** argv) { 
+  const char* host = getenv("HTTP_HOST");
+  const char* referer = getenv("HTTP_REFERER");
+  const char* uri = getenv("REQUEST_URI");
+  const char* method = getenv("REQUEST_METHOD");
+    
   connect_db("memereap");
   
-  route(request_uri);
+  route(host, uri, method, referer);
   
   mysql_close(&mysql);
-  
+    
   return EXIT_SUCCESS;
 }
 

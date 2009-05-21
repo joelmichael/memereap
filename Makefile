@@ -11,18 +11,17 @@ check:	tests/bin/db_test tests/bin/user_test reload
 	tests/bin/db_test
 	tests/bin/user_test
 
+tests/bin/db_test:	tests/db_test.c
+			cc $(CFLAGS) $(LDFLAGS) -o $@ $^
+
+tests/bin/user_test:	tests/user_test.c
+			cc $(CFLAGS) $(LDFLAGS) -o $@ $^
+				
 reload:		
 	mysql -u root memereap_test < db/memereap_test.sql
 		
 dump:		
 	mysqldump -u root memereap_test > db/memereap_test.sql
-
-				
-tests/bin/db_test:	tests/db_test.c
-			cc $(CFLAGS) $(LDFLAGS) -o $@ $^
-					
-tests/bin/user_test:	tests/user_test.c
-			cc $(CFLAGS) $(LDFLAGS) -o $@ $^
 			
 clean:	
 	rm -rf public/memereap.cgi* tests/bin/*
