@@ -1,7 +1,7 @@
 mysqlheaders = /opt/local/include/mysql5/mysql
 mysqllibs = /opt/local/lib/mysql5/mysql
 
-CFLAGS = -Imodels -Ilib -std=c99 -pedantic -g
+CFLAGS = -I. -std=c99 -pedantic -g
 
 all:	check
 	

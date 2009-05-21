@@ -1,4 +1,4 @@
-#include "user.h"
+#include "models/user.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -7,10 +7,14 @@
 void test_select_user() {
   struct user user;  
   
-  assert(select_user(&user, 1) == 0);
+  assert(select_user_by_id(&user, 1) == 0);
   assert(strcmp(user.login, "aristotle") == 0);
-    
-  assert(select_user(&user, 2) == 1);
+  assert(user.created_at.tm_year == 2009 - 1900);
+  
+  assert(select_user_by_login(&user, "aristotle") == 0);
+  assert(user.id == 1);
+  
+  assert(select_user_by_id(&user, 2) == 1);
   assert(strcmp(user.login, "aristotle") == 0);
 }
 
@@ -27,11 +31,11 @@ void test_insert_user() {
 void test_update_user() {
   struct user user;
   
-  select_user(&user, 2);
+  select_user_by_id(&user, 2);
   strcpy(user.login, "socrates");
   assert(update_user(&user) == 0);
   strcpy(user.login, "kant");
-  select_user(&user, 2);
+  select_user_by_id(&user, 2);
   assert(strcmp(user.login, "socrates") == 0);
 }
 
@@ -39,7 +43,7 @@ void test_delete_user() {
   struct user user;
   
   assert(delete_user(2) == 0);
-  assert(select_user(&user, 2) == 1);
+  assert(select_user_by_id(&user, 2) == 1);
 }
 
 int main(int argc, char** argv) {

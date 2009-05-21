@@ -1,14 +1,12 @@
 #include "user.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-int select_user(struct user* user, const int id) {
-  char stmt[256];
+int select_user(struct user* user, const char* stmt) {
   MYSQL_RES* res;
   MYSQL_ROW row;
-  
-  sprintf(stmt, "select * from users where id = %d", id);
-  
+    
   if(mysql_query(&mysql, stmt) == 0) {
     res = mysql_use_result(&mysql);
     row = mysql_fetch_row(res);
@@ -18,9 +16,10 @@ int select_user(struct user* user, const int id) {
       return 1;
     }
     else {
-      user->id = id;
+      user->id = atoi(row[0]);
       strcpy(user->login, row[1]);
       parse_mysql_time(&user->created_at, row[2]);
+      
       mysql_free_result(res);
       return 0;
     }
@@ -54,4 +53,23 @@ int delete_user(const int id) {
   sprintf(stmt, "delete from users where id = %d", id);
   
   return mysql_query(&mysql, stmt);
+}
+
+int select_user_by_id(struct user* user, const int id) {
+  char stmt[256];
+  
+  sprintf(stmt, "select * from users where id = %d", id);
+  
+  return select_user(user, stmt);
+}
+
+int select_user_by_login(struct user* user, const char* login) {
+  char stmt[256];
+  char escaped[32];
+  
+  escape_str(escaped, login);
+  
+  sprintf(stmt, "select * from users where login = '%s'", escaped);
+  
+  return select_user(user, stmt);
 }
