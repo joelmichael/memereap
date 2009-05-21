@@ -1,0 +1,4 @@
+MemeReap is a Twitter clone written in C.
+
+This application is designed as a sample application from which a C web framework
+will be abstracted.
