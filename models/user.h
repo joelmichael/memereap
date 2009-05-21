@@ -5,7 +5,7 @@
 
 struct user {
   int id;
-  char login[256];
+  char login[24];
   struct tm created_at;
 };
 
