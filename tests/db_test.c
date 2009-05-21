@@ -1,8 +1,9 @@
-#include "lib/db.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+
+#include "lib/db.c"
 
 void test_escape_str() {
   const char* str = "foo'bar\\;\"";

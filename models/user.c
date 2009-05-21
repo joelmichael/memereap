@@ -1,7 +1,17 @@
-#include "user.h"
+#ifndef user_c
+#define user_c
+
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "lib/db.c"
+
+struct user {
+  int id;
+  char login[24];
+  struct tm created_at;
+};
 
 int select_user(struct user* user, const char* stmt) {
   MYSQL_RES* res;
@@ -73,3 +83,5 @@ int select_user_by_login(struct user* user, const char* login) {
   
   return select_user(user, stmt);
 }
+
+#endif

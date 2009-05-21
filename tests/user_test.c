@@ -1,8 +1,9 @@
-#include "models/user.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+
+#include "models/user.c"
 
 void test_select_user() {
   struct user user;  

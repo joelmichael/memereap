@@ -1,0 +1,10 @@
+AddHandler cgi-script .cgi
+Options +FollowSymLinks +ExecCGI
+
+RewriteEngine On
+
+RewriteRule ^$ index.html [QSA]
+RewriteRule ^([^.]+)$ $1.html [QSA]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ memereap.cgi [QSA,L]
+

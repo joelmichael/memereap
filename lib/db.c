@@ -1,7 +1,13 @@
-#include "db.h"
+#ifndef db_c
+#define db_c
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <mysql.h>
+#include <time.h>
+
+MYSQL mysql;
 
 void connect_db(const char* db) {
   MYSQL* conn = 
@@ -75,3 +81,5 @@ void parse_mysql_time(struct tm* buf, const char* str) {
 void make_mysql_time(char* buf, const struct tm* tm) {
   strftime(buf, 20, "%Y-%m-%d %H:%M:%S", tm);
 }
+
+#endif
