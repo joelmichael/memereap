@@ -1,9 +1,6 @@
 #ifndef user_controller_c
 #define user_controller_c
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "lib/response.c"
 #include "models/user.c"
 

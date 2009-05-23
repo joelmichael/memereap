@@ -1,12 +1,15 @@
 #ifndef response_c
 #define response_c
 
+#include <stdio.h>
+#include <string.h>
+
 static int response_code = 200;
 static char content_type[32] = "text/plain";
 static char redirect_location[256];
 
 void print_headers() {
-  printf("HTTP/1.1 ");
+  printf("Status: ");
   
   switch(response_code) {
     case 200:

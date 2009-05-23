@@ -1,11 +1,7 @@
 #ifndef user_c
 #define user_c
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "lib/db.c"
+#include "lib/model.c"
 
 struct user {
   int id;
@@ -13,34 +9,25 @@ struct user {
   struct tm created_at;
 };
 
+static void map_row(void* model, MYSQL_ROW row) {
+  struct user* user = model;
+  
+  user->id = atoi(row[0]);
+  strcpy(user->login, row[1]);
+  parse_mysql_time(&user->created_at, row[2]);
+}
+
 int select_user(struct user* user, const char* stmt) {
-  MYSQL_RES* res;
-  MYSQL_ROW row;
-    
-  if(mysql_query(&mysql, stmt) == 0) {
-    res = mysql_use_result(&mysql);
-    row = mysql_fetch_row(res);
-    
-    if(row == NULL) {
-      mysql_free_result(res);
-      return 1;
-    }
-    else {
-      user->id = atoi(row[0]);
-      strcpy(user->login, row[1]);
-      parse_mysql_time(&user->created_at, row[2]);
-      
-      mysql_free_result(res);
-      return 0;
-    }
-  }
-  else return 2;
+  return select_model(user, stmt, map_row);
 }
 
 int insert_user(struct user* user) {
   char stmt[256];
+  char escaped_login[sizeof(user->login)*2+1];
   
-  sprintf(stmt, "insert into users (login) values ('%s')", user->login);
+  escape_str(escaped_login, user->login);
+  
+  sprintf(stmt, "insert into users (login) values ('%s')", escaped_login);
   
   if(mysql_query(&mysql, stmt) == 0) {
     user->id = mysql_insert_id(&mysql);
@@ -51,8 +38,11 @@ int insert_user(struct user* user) {
 
 int update_user(struct user* user) {
   char stmt[256];
+  char escaped_login[sizeof(user->login)*2+1];
   
-  sprintf(stmt, "update users set login = '%s' where id = %d", user->login, user->id);
+  escape_str(escaped_login, user->login);
+  
+  sprintf(stmt, "update users set login = '%s' where id = %d", escaped_login, user->id);
   
   return mysql_query(&mysql, stmt);
 }
