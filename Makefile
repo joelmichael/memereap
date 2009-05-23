@@ -1,20 +1,22 @@
 CFLAGS = -I. -I/opt/local/include/mysql5/mysql -std=c99 -pedantic -g
 LDFLAGS = -L/opt/local/lib/mysql5/mysql -lmysqlclient
 
-all:	check public/memereap.cgi
+all:	public/memereap.cgi
 
 
-public/memereap.cgi:	lib/cgi.o
+public/memereap.cgi:	lib/cgi.o lib/db.o lib/model.o lib/response.o lib/routes.o\
+			models/user.o\
+			controllers/user_controller.o
 			cc $(LDFLAGS) -o $@ $^
 
-check:	tests/bin/db_test tests/bin/user_test reload
+check:	tests/bin/db_test tests/bin/user_test
 	tests/bin/db_test
 	tests/bin/user_test
 
-tests/bin/db_test:	tests/db_test.o
+tests/bin/db_test:	tests/db_test.o lib/db.o
 			cc $(LDFLAGS) -o $@ $^
 
-tests/bin/user_test:	tests/user_test.o
+tests/bin/user_test:	tests/user_test.o lib/db.o lib/model.o models/user.o
 			cc $(LDFLAGS) -o $@ $^
 				
 reload:		
@@ -24,4 +26,5 @@ dump:
 	mysqldump -u root memereap_test > db/memereap_test.sql
 			
 clean:	
-	rm -f tests/*.o lib/*.o public/memereap.cgi tests/bin/*
+	rm -f public/memereap.cgi tests/bin/* lib/*.o models/*.o controllers/*.o
+

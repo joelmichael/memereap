@@ -1,5 +1,4 @@
-#ifndef db_c
-#define db_c
+#include "db.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -81,5 +80,3 @@ void parse_mysql_time(struct tm* buf, const char* str) {
 void make_mysql_time(char* buf, const struct tm* tm) {
   strftime(buf, 20, "%Y-%m-%d %H:%M:%S", tm);
 }
-
-#endif

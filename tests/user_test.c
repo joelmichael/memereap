@@ -3,7 +3,8 @@
 #include <assert.h>
 #include <string.h>
 
-#include "models/user.c"
+#include "lib/db.h"
+#include "models/user.h"
 
 void test_select_user() {
   struct user user;  

@@ -1,8 +1,9 @@
-#ifndef user_controller_c
-#define user_controller_c
+#include "controllers/user_controller.h"
 
-#include "lib/response.c"
-#include "models/user.c"
+#include <stdio.h>
+
+#include "lib/response.h"
+#include "models/user.h"
 
 void show_user(int id) {
   struct user user;
@@ -17,5 +18,3 @@ void show_user(int id) {
     printf("could not find user id %d\n", id);
   }
 }
-
-#endif

@@ -1,7 +1,6 @@
-#ifndef model_c
-#define model_c
+#include "lib/model.h"
 
-#include "lib/db.c"
+#include "lib/db.h"
 
 int select_model(void* model, const char* stmt, void (*map_row)(void*, MYSQL_ROW)) {
   MYSQL_RES* res;
@@ -24,5 +23,3 @@ int select_model(void* model, const char* stmt, void (*map_row)(void*, MYSQL_ROW
   }
   else return 2;
 }
-
-#endif

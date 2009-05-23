@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "lib/db.c"
+#include "lib/db.h"
 
 void test_escape_str() {
   const char* str = "foo'bar\\;\"";

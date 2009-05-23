@@ -1,13 +1,12 @@
-#ifndef user_c
-#define user_c
+#include "models/user.h"
 
-#include "lib/model.c"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <mysql.h>
 
-struct user {
-  int id;
-  char login[24];
-  struct tm created_at;
-};
+#include "lib/db.h"
+#include "lib/model.h"
 
 static void map_row(void* model, MYSQL_ROW row) {
   struct user* user = model;
@@ -73,5 +72,3 @@ int select_user_by_login(struct user* user, const char* login) {
   
   return select_user(user, stmt);
 }
-
-#endif

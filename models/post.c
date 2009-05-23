@@ -1,14 +1,12 @@
-#ifndef post_c
-#define post_c
+#include "models/post.h"
 
-#include "lib/model.c"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <mysql.h>
 
-struct post {
-  int id;
-  int user_id;
-  char body[256];
-  struct tm created_at;
-};
+#include "lib/db.h"
+#include "lib/model.h"
 
 static int map_row(void* model, MYSQL_ROW row) {
   struct post* post = model;
@@ -18,30 +16,9 @@ static int map_row(void* model, MYSQL_ROW row) {
   strcpy(post->body, row[2]);
 }
 
-// int select_post(struct post* post, const char* stmt) {
-//   MYSQL_RES* res;
-//   MYSQL_ROW row;
-// 
-//   if(mysql_query(&mysql, stmt) == 0) {
-//     res = mysql_use_result(&mysql);
-//     row = mysql_fetch_row(res);
-// 
-//     if(row == NULL) {
-//       mysql_free_result(res);
-//       return 1;
-//     }
-//     else {
-//       post->id = atoi(row[0]);
-//       post->user_id = atoi(row[1]);
-//       strcpy(post->body, row[2]);
-//       parse_mysql_time(&post->created_at, row[3]);
-// 
-//       mysql_free_result(res);
-//       return 0;
-//     }
-//   }
-//   else return 2;
-// }
+int select_post(struct post* post, const char* stmt) {
+  return select_model(post, stmt, map_row);
+}
 
 int insert_post(struct post* post) {
   char stmt[256];
@@ -85,5 +62,3 @@ int select_post_by_id(struct post* post, const int id) {
   
   return select_model(post, stmt);
 }
-
-#endif

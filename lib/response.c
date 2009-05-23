@@ -1,11 +1,10 @@
-#ifndef response_c
-#define response_c
+#include "response.h"
 
 #include <stdio.h>
 #include <string.h>
 
 static int response_code = 200;
-static char content_type[32] = "text/plain";
+static char content_type[32] = DEFAULT_CONTENT_TYPE;
 static char redirect_location[256];
 
 void print_headers() {
@@ -48,5 +47,3 @@ void set_response_code(int code) {
 void set_content_type(const char* type) {
   strcpy(content_type, type);
 }
-
-#endif

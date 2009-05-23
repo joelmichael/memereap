@@ -1,11 +1,10 @@
-#ifndef cgi_c
-#define cgi_c
+#include "cgi.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "lib/routes.c"
-#include "lib/db.c"
+#include "lib/routes.h"
+#include "lib/db.h"
 
 int main(int argc, char** argv) { 
   const char* host = getenv("HTTP_HOST");
@@ -21,5 +20,3 @@ int main(int argc, char** argv) {
     
   return EXIT_SUCCESS;
 }
-
-#endif
