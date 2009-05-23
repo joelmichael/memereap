@@ -8,7 +8,7 @@
 #include "lib/db.h"
 #include "lib/model.h"
 
-static int map_row(void* model, MYSQL_ROW row) {
+static void map_row(void* model, MYSQL_ROW row) {
   struct post* post = model;
   
   post->id = atoi(row[0]);
