@@ -60,9 +60,12 @@ char* parse_template(const struct tcache tc, const struct tvar* tvars, const int
     dist = ptr - lastptr;
     strncpy(parsedptr, lastptr, dist);
     parsedptr += dist;
+    lastptr = ptr;
     
     for(i = 0; i < tvar_count; i++) {
-      if(strncmp(ptr+2, tvars[i].name, tvars[i].name_length) && strncmp(ptr+2+tvars[i].name_length, "}}", 2)) {
+      if(strncmp(ptr+2, tvars[i].name, tvars[i].name_length) == 0 &&
+         strncmp(ptr+2+tvars[i].name_length, "}}", 2) == 0)
+      {
         // if there's a match, copy the replacement and update pointers
         strncpy(parsedptr, tvars[i].value, tvars[i].value_length);
         parsedptr += tvars[i].value_length;
@@ -71,8 +74,13 @@ char* parse_template(const struct tcache tc, const struct tvar* tvars, const int
       }
     }
     
-    lastptr = ptr;
-    ptr++;
+    // increment one if nothing matched
+    if(lastptr == ptr) {
+      ptr++;
+    }
+    else {
+      lastptr = ptr;
+    }
   }
   
   // one last copy
