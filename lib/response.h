@@ -11,4 +11,6 @@ void set_response_code(int code);
 
 void set_content_type(const char* type);
 
+void print_404();
+
 #endif

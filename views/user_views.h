@@ -3,6 +3,6 @@
 
 #include "models/user.h"
 
-void print_show_user(struct user* user);
+void print_show_user(struct user user);
 
 #endif

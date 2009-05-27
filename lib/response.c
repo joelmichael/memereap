@@ -47,3 +47,9 @@ void set_response_code(int code) {
 void set_content_type(const char* type) {
   strcpy(content_type, type);
 }
+
+void print_404() {
+  set_response_code(404);
+  print_headers();
+  printf("404 Not Found");
+}

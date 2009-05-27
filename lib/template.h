@@ -2,26 +2,22 @@
 #define template_h
 
 struct tcache {
-  char[32] filename;
+  char filename[32];
   unsigned int length;
   char* content;
 };
 
 struct tvar {
-  char[24] name;
+  char name[24];
   int name_length;
   char* value;
   unsigned int value_length;
 };
 
-struct tcache[] tcaches;
-
-struct tcache* cache_template(const char* filename);
-
-void free_tcache(struct tcache* tc);
+void cache_template(struct tcache* tc, const char* filename);
 
 void define_tvar(struct tvar* tv, const char* name, const char* value);
 
-char* parse_template(const char* template, struct tvar* tvars);
+char* parse_template(const struct tcache tc, const struct tvar* tvars, const int tvar_count);
 
 #endif

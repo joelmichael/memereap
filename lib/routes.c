@@ -9,16 +9,16 @@
 
 void route(const char* host, const char* uri, const char* method, const char* referer) {
   if(strstr(uri, "/users/new") == uri) {
-    //new_user(method);
+    //handle_new_user(method);
   }
   else if(strstr(uri, "/users/edit/") == uri) {
-    //edit_user(atoi(uri+12), method);
+    //handle_edit_user(atoi(uri+12), method);
   }
   else if(strstr(uri, "/users/") == uri) {
-    show_user(atoi(uri+7));
+    handle_show_user(atoi(uri+7));
   }
   else if(strstr(uri, "/users/delete/") == uri) {
-    //delete_user(atoi(uri+14));
+    //handle_delete_user(atoi(uri+14));
   }
   else {
     set_response_code(404);

@@ -4,9 +4,10 @@ LDFLAGS = -L/opt/local/lib/mysql5/mysql -lmysqlclient
 all:	public/memereap.cgi
 
 
-public/memereap.cgi:	lib/cgi.o lib/db.o lib/model.o lib/response.o lib/routes.o\
+public/memereap.cgi:	lib/cgi.o lib/db.o lib/model.o lib/response.o lib/routes.o lib/template.o\
 			models/user.o\
-			controllers/user_controller.o
+			controllers/user_controller.o\
+			views/user_views.o
 			cc $(LDFLAGS) -o $@ $^
 
 check:	tests/bin/db_test tests/bin/user_test
