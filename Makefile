@@ -26,5 +26,5 @@ dump:
 	mysqldump -u root memereap_test > db/memereap_test.sql
 			
 clean:	
-	rm -f public/memereap.cgi tests/bin/* lib/*.o models/*.o controllers/*.o
+	rm -f public/memereap.cgi tests/bin/* lib/*.o models/*.o controllers/*.o tests/*.o views/*.o
 

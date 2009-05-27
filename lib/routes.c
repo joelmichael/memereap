@@ -7,9 +7,7 @@
 #include "lib/response.h"
 #include "controllers/user_controller.h"
 
-void route(const char* host, const char* uri, const char* method,
-           const char* referer)
-{
+void route(const char* host, const char* uri, const char* method, const char* referer) {
   if(strstr(uri, "/users/new") == uri) {
     //new_user(method);
   }
