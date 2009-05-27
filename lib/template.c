@@ -12,7 +12,7 @@ void cache_template(struct tcache* tc, const char* filename) {
   struct stat st;
   char path[42];
   
-  strcpy(path, "templates/");
+  strcpy(path, "../templates/");
   strcat(path, filename);
   strcpy(tc->filename, filename);
   

@@ -4,7 +4,7 @@
 #include <string.h>
 
 static int response_code = 200;
-static char content_type[32] = DEFAULT_CONTENT_TYPE;
+static char content_type[32] = "text/html";
 static char redirect_location[256];
 
 void print_headers() {

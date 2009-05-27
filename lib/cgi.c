@@ -6,7 +6,7 @@
 #include "lib/routes.h"
 #include "lib/db.h"
 
-int main(int argc, char** argv) { 
+int main(int argc, char** argv) {
   const char* host = getenv("HTTP_HOST");
   const char* referer = getenv("HTTP_REFERER");
   const char* uri = getenv("REQUEST_URI");

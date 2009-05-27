@@ -1,8 +1,6 @@
 #ifndef response_h
 #define response_h
 
-#define DEFAULT_CONTENT_TYPE "text/html"
-
 void print_headers();
 
 void redirect_to(const char* url);
