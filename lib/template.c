@@ -72,6 +72,7 @@ char* parse_template(const struct tcache tc, const struct tvar* tvars, const int
     }
     
     lastptr = ptr;
+    ptr++;
   }
   
   // one last copy

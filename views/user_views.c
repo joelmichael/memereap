@@ -15,7 +15,7 @@ void print_show_user(struct user user) {
   define_tvar(tvars, "login", user.login);
   
   if(show_user_tc.length == 0) {
-    cache_template(&show_user_tc, "show_user.html");
+    cache_template(&show_user_tc, "users/show_user.html");
   }
   
   parsed = parse_template(show_user_tc, tvars, 1);
