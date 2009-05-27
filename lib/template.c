@@ -44,7 +44,7 @@ char* parse_template(struct tcache* tc, struct tvar* tvars, int tvar_count) {
   char* ptr;
   char* lastptr;
   char* parsedptr;
-  int dist = 0;
+  int dist;
   
   length = tc->length;
   
@@ -59,9 +59,9 @@ char* parse_template(struct tcache* tc, struct tvar* tvars, int tvar_count) {
   lastptr = tc->content;
   ptr = tc->content;
 
-  while(ptr = strstr(ptr, "{{")) {
+  while(ptr = strstr(ptr, "{{")) {    
     // copy everything between ptr and lastptr into parsed
-    dist += ptr - lastptr;
+    dist = ptr - lastptr;
     strncpy(parsedptr, lastptr, dist);
     parsedptr += dist;
     
