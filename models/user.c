@@ -12,8 +12,10 @@ static void map_row(void* model, MYSQL_ROW row) {
   struct user* user = model;
   
   user->id = atoi(row[0]);
+  strcpy(user->id_str, row[0]);
   strcpy(user->login, row[1]);
   parse_mysql_time(&user->created_at, row[2]);
+  strcpy(user->created_at_str, row[2]);
 }
 
 int select_user(struct user* user, const char* stmt) {

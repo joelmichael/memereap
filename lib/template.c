@@ -40,7 +40,7 @@ char* parse_template(const struct tcache tc, const struct tvar* tvars, const int
   char* ptr;
   char* lastptr;
   char* parsedptr;
-  int dist;
+  unsigned int dist;
   
   length = tc.length;
   
