@@ -20,6 +20,10 @@ int select_post(struct post* post, const char* stmt) {
   return select_model(post, stmt, map_row);
 }
 
+int select_all_posts(struct post* posts, const char* stmt, const int limit) {
+  return select_all_models(posts, sizeof(struct post), stmt, map_row, limit);
+}
+
 int insert_post(struct post* post) {
   char stmt[256];
   char escaped_body[sizeof(post->body)*2+1];

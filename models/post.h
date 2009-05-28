@@ -12,6 +12,8 @@ struct post {
 
 int select_post(struct post* post, const char* stmt);
 
+int select_all_posts(struct post* posts, const char* stmt, const int limit);
+
 int insert_post(struct post* post);
 
 int update_post(struct post* post);

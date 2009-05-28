@@ -10,7 +10,7 @@ public/memereap.cgi:	lib/cgi.o lib/db.o lib/model.o lib/response.o lib/routes.o 
 			views/user_views.o
 			cc $(LDFLAGS) -o $@ $^
 
-check:	tests/bin/db_test tests/bin/user_test
+check:	tests/bin/db_test tests/bin/user_test reload
 	tests/bin/db_test
 	tests/bin/user_test
 
