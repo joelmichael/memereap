@@ -30,6 +30,19 @@ void test_insert_user() {
   assert(insert_user(&user) == 1);
 }
 
+void test_select_all_users() {
+  struct user users[2];  
+  
+  assert(select_all_users(users, "select * from users", 2) == 0);
+  
+  assert(users[0].id == 1);
+  assert(strcmp(users[0].login, "aristotle") == 0);
+  assert(users[0].created_at.tm_year == 2009 - 1900);
+    
+  assert(users[1].id == 2);
+  assert(strcmp(users[1].login, "plato") == 0);
+}
+
 void test_update_user() {
   struct user user;
   
@@ -53,6 +66,7 @@ int main(int argc, char** argv) {
   
   test_select_user();
   test_insert_user();
+  test_select_all_users();
   test_update_user();
   test_delete_user();
   

@@ -22,6 +22,10 @@ int select_user(struct user* user, const char* stmt) {
   return select_model(user, stmt, map_row);
 }
 
+int select_all_users(struct user* users, const char* stmt, const int limit) {
+  return select_all_models(users, sizeof(struct user), stmt, map_row, limit);
+}
+
 int insert_user(struct user* user) {
   char stmt[256];
   char escaped_login[sizeof(user->login)*2+1];
@@ -34,7 +38,8 @@ int insert_user(struct user* user) {
     user->id = mysql_insert_id(&mysql);
     return 0;
   }
-  else return 1;
+  else
+    return 1;
 }
 
 int update_user(struct user* user) {

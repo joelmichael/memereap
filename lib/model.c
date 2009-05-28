@@ -21,5 +21,29 @@ int select_model(void* model, const char* stmt, void (*map_row)(void*, MYSQL_ROW
       return 0;
     }
   }
-  else return 2;
+  else
+    return 2;
+}
+
+int select_all_models(void* models, const int struct_size, const char* stmt, void (*map_row)(void*, MYSQL_ROW),
+                  const int limit)
+{
+  MYSQL_RES* res;
+  MYSQL_ROW row;
+  int i = 0;
+  
+  if(mysql_query(&mysql, stmt) == 0) {
+    res = mysql_use_result(&mysql);
+
+    while((row = mysql_fetch_row(res)) && i < limit) {
+      (*map_row)((char*)models+(i*struct_size), row);
+      
+      i++;
+    }
+    
+    mysql_free_result(res);
+    return 0;
+  }
+  else
+    return 1;
 }

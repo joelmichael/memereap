@@ -13,6 +13,8 @@ struct user {
 
 int select_user(struct user* user, const char* stmt);
 
+int select_all_users(struct user* users, const char* stmt, const int limit);
+
 int insert_user(struct user* user);
 
 int update_user(struct user* user);

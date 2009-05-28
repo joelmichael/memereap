@@ -49,7 +49,8 @@ int select_str(char* buf, const char* stmt) {
       return 0;
     }
   }
-  else return 2;
+  else
+    return 2;
 }
 
 void parse_mysql_time(struct tm* buf, const char* str) {

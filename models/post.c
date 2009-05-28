@@ -32,7 +32,8 @@ int insert_post(struct post* post) {
     post->id = mysql_insert_id(&mysql);
     return 0;
   }
-  else return 1;
+  else
+    return 1;
 }
 
 int update_post(struct post* post) {
