@@ -24,14 +24,14 @@ int select_all_users(struct user* users, const char* stmt, int limit) {
 }
 
 int select_user_by_id(struct user* user, const char* id) {  
-  sprintf(sb, "select * from users where id = %s", id);
-  return select_user(user, sb);
+  sprintf(stbf, "select * from users where id = %s", id);
+  return select_user(user, stbf);
 }
 
 int select_user_by_login(struct user* user, const char* login) {
   escape_str(esc[0], login);
-  sprintf(sb, "select * from users where login = '%s'", esc[0]);
-  return select_user(user, sb);
+  sprintf(stbf, "select * from users where login = '%s'", esc[0]);
+  return select_user(user, stbf);
 }
 
 // change attributes
@@ -54,9 +54,9 @@ void set_user_created_at(struct user* user, const char* created_at) {
 // writes
 
 int insert_user(struct user* user) {
-  sprintf(sb, "insert into users (login) values ('%s')", user->login_esc);
+  sprintf(stbf, "insert into users (login) values ('%s')", user->login_esc);
   
-  if(query(sb) == 0) {
+  if(query(stbf) == 0) {
     sprintf(insid, "%lu", last_insert_id());
     set_user_id(user, insid);
     return 0;
@@ -67,11 +67,11 @@ int insert_user(struct user* user) {
 }
 
 int update_user(struct user* user) {
-  sprintf(sb, "update users set login = '%s' where id = %s", user->login_esc, user->id);
-  return query(sb);
+  sprintf(stbf, "update users set login = '%s' where id = %s", user->login_esc, user->id);
+  return query(stbf);
 }
 
 int delete_user(const char* id) {  
-  sprintf(sb, "delete from users where id = %s", id);
-  return query(sb);
+  sprintf(stbf, "delete from users where id = %s", id);
+  return query(stbf);
 }
