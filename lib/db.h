@@ -3,14 +3,16 @@
 
 #include <time.h>
 
+struct model {
+  char id[32];
+  unsigned long id_ul;
+};
+
 // handy generic statement buffer
 char stbf[2048];
 
 // handy generic buffer for escaping select conditions
 char esc[512][8];
-
-// handy buffer for converting last insert id
-char insid[32];
 
 void connect_db(const char* db);
 
@@ -31,5 +33,9 @@ unsigned long last_insert_id();
 int select_model(void* model, const char* stmt, void (*map_row)(void*, char**));
 
 int select_all_models(void* models, int struct_size, const char* stmt, void (*map_row)(void*, char**), int limit);
+
+int insert_model(struct model* model, const char* stmt);
+
+void set_model_id(struct model* model, const char* id);
 
 #endif

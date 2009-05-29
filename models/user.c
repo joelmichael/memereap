@@ -8,7 +8,7 @@
 // static
 
 static void map_row(void* model, char** row) {
-  set_user_id(model, row[0]);
+  set_model_id(model, row[0]);
   set_user_login(model, row[1]);
   set_user_created_at(model, row[2]);
 }
@@ -36,11 +36,6 @@ int select_user_by_login(struct user* user, const char* login) {
 
 // attributes
 
-void set_user_id(struct user* user, const char* id) {
-  strcpy(user->id, id);
-  user->id_ul = strtoul(id, NULL, 10);
-}
-
 void set_user_login(struct user* user, const char* login) {
   strcpy(user->login, login);
   stresc(user->login_esc, login);
@@ -55,15 +50,7 @@ void set_user_created_at(struct user* user, const char* created_at) {
 
 int insert_user(struct user* user) {
   sprintf(stbf, "insert into users (login) values ('%s')", user->login_esc);
-  
-  if(query(stbf) == 0) {
-    sprintf(insid, "%lu", last_insert_id());
-    set_user_id(user, insid);
-    return 0;
-  }
-  else {
-    return 1;
-  }
+  return insert_model((struct model*)user, stbf);
 }
 
 int update_user(struct user* user) {

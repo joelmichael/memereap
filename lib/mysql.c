@@ -140,3 +140,19 @@ int select_all_models(void* models, int struct_size, const char* stmt, void (*ma
     return 1;
   }
 }
+
+int insert_model(struct model* model, const char* stmt) {  
+  if(query(stmt) == 0) {
+    model->id_ul = last_insert_id();
+    sprintf(model->id, "%lu", model->id_ul);
+    return 0;
+  }
+  else {
+    return 1;
+  }
+}
+
+void set_model_id(struct model* model, const char* id) {  
+  strcpy(model->id, id);
+  model->id_ul = strtoul(id, NULL, 10);
+}
