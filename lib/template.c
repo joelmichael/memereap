@@ -37,8 +37,7 @@ struct tcache* cache_template(const char* filename) {
       
   file = fopen(path, "r");
 
-  while(!feof(file)) {
-    fgets(line, LINE_MAX, file);
+  while(fgets(line, LINE_MAX, file) != NULL) {
     parse_line(tc, line);
   }
 
