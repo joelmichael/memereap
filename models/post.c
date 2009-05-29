@@ -20,7 +20,7 @@ int select_post(struct post* post, const char* stmt) {
   return select_model(post, stmt, map_row);
 }
 
-int select_all_posts(struct post* posts, const char* stmt, const int limit) {
+int select_all_posts(struct post* posts, const char* stmt, int limit) {
   return select_all_models(posts, sizeof(struct post), stmt, map_row, limit);
 }
 
@@ -53,7 +53,7 @@ int update_post(struct post* post) {
   return mysql_query(&mysql, stmt);
 }
 
-int delete_post(const int id) {
+int delete_post(int id) {
   char stmt[256];
   
   sprintf(stmt, "delete from posts where id = %d", id);
@@ -61,7 +61,7 @@ int delete_post(const int id) {
   return mysql_query(&mysql, stmt);
 }
 
-int select_post_by_id(struct post* post, const int id) {
+int select_post_by_id(struct post* post,int id) {
   char stmt[256];
   
   sprintf(stmt, "select * from posts where id = %d", id);

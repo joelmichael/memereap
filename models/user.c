@@ -22,7 +22,7 @@ int select_user(struct user* user, const char* stmt) {
   return select_model(user, stmt, map_row);
 }
 
-int select_all_users(struct user* users, const char* stmt, const int limit) {
+int select_all_users(struct user* users, const char* stmt, int limit) {
   return select_all_models(users, sizeof(struct user), stmt, map_row, limit);
 }
 
@@ -54,7 +54,7 @@ int update_user(struct user* user) {
   return mysql_query(&mysql, stmt);
 }
 
-int delete_user(const int id) {
+int delete_user(int id) {
   char stmt[256];
   
   sprintf(stmt, "delete from users where id = %d", id);
@@ -62,7 +62,7 @@ int delete_user(const int id) {
   return mysql_query(&mysql, stmt);
 }
 
-int select_user_by_id(struct user* user, const int id) {
+int select_user_by_id(struct user* user, int id) {
   char stmt[256];
   
   sprintf(stmt, "select * from users where id = %d", id);
@@ -70,7 +70,7 @@ int select_user_by_id(struct user* user, const int id) {
   return select_user(user, stmt);
 }
 
-int select_user_by_login(struct user* user, const char* login) {
+int select_user_by_login(struct user* user, char* login) {
   char stmt[256];
   char escaped[32];
   

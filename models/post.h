@@ -12,14 +12,14 @@ struct post {
 
 int select_post(struct post* post, const char* stmt);
 
-int select_all_posts(struct post* posts, const char* stmt, const int limit);
+int select_all_posts(struct post* posts, const char* stmt, int limit);
 
 int insert_post(struct post* post);
 
 int update_post(struct post* post);
 
-int delete_post(const int id);
+int delete_post(int id);
 
-int select_post_by_id(struct post* post, const int id);
+int select_post_by_id(struct post* post, int id);
 
 #endif
