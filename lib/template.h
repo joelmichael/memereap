@@ -13,19 +13,19 @@ struct tcache {
 struct tnode {
   struct tnode* next = NULL;
   char* text = NULL;
-  char* varname = NULL;
+  char* varname;
 };
 
 struct tvar {
-  char[16] name;
+  char* name;
   char* value;
-  unsigned int value_length;
+  struct tvar* next;
 };
 
 void cache_template(struct tcache* tc, const char* filename);
 
-void define_tvar(struct tvar* tv, const char* name, const char* value);
+void set_tvar(struct tvar* tv, const char* name, const char* value);
 
-char* perform_subs(struct tcache* tc, struct tvar* tvars);
+void print_tcache(struct tcache* tc, struct tvar* tvars, const int tvar_count);
 
 #endif
