@@ -23,7 +23,7 @@ void test_select_user() {
 void test_insert_user() {
   struct user user;
   
-  strcpy(user.login, "plato");
+  set_user_login(&user, "plato");
   
   assert(insert_user(&user) == 0);
   assert(user.id == 2);
@@ -47,9 +47,9 @@ void test_update_user() {
   struct user user;
   
   select_user_by_id(&user, 2);
-  strcpy(user.login, "socrates");
+  set_user_login(&user, "socrates");
   assert(update_user(&user) == 0);
-  strcpy(user.login, "kant");
+  set_user_login(&user, "kant");
   select_user_by_id(&user, 2);
   assert(strcmp(user.login, "socrates") == 0);
 }
