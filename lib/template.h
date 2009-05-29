@@ -17,7 +17,7 @@ struct tnode {
 };
 
 struct tvar {
-  char* name;
+  char name[24];
   char* value;
   struct tvar* next;
 };
