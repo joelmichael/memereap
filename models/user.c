@@ -7,7 +7,7 @@
 
 // selects
 
-static void map_row(void* model, char** row) {  
+static void map_row(void* model, char** row) {
   set_user_id(model, row[0]);
   set_user_login(model, row[1]);
   set_user_created_at(model, row[2]);

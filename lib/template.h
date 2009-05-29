@@ -4,6 +4,8 @@
 #define LINE_MAX 512
 #define VARNAME_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
 
+#define use_template(tcache, filename) if(tcache == NULL) tcache = cache_template(filename)
+
 struct tcache {
   char filename[32];
   struct tnode* first;
