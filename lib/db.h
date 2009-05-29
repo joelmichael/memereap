@@ -3,6 +3,7 @@
 
 #include <time.h>
 
+// all standard model structs should start with these two variables
 struct model {
   char id[32];
   unsigned long id_ul;
@@ -12,7 +13,7 @@ struct model {
 char stbf[2048];
 
 // handy generic buffer for escaping select conditions
-char esc[512][8];
+char esc[512][16];
 
 void connect_db(const char* db);
 
@@ -20,15 +21,15 @@ void disconnect_db();
 
 void stresc(char* to, const char* restrict from);
 
-int select_str(char* buf, const char* stmt);
+int query(const char* stmt);
+
+unsigned long last_insert_id();
 
 void parse_db_time(struct tm* buf, const char* str);
 
 void make_db_time(char* buf, const struct tm* tm);
 
-int query(const char* stmt);
-
-unsigned long last_insert_id();
+int select_str(char* buf, const char* stmt);
 
 int select_model(void* model, const char* stmt, void (*map_row)(void*, char**));
 

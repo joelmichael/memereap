@@ -35,27 +35,12 @@ void stresc(char* to, const char* restrict from) {
   mysql_real_escape_string(&mysql, to, from, strlen(from));
 }
 
-int select_str(char* buf, const char* stmt) {
-  MYSQL_RES* res;
-  MYSQL_ROW row;
-    
-  if(query(stmt) == 0) {
-    res = mysql_use_result(&mysql);
-    row = mysql_fetch_row(res);
+int query(const char* stmt) {
+  return mysql_query(&mysql, stmt);
+}
 
-    if(row == NULL) {
-      mysql_free_result(res);
-      return 1;
-    }
-    else {
-      strcpy(buf, row[0]);
-      mysql_free_result(res);
-      return 0;
-    }
-  }
-  else {
-    return 2;
-  }
+unsigned long last_insert_id() {
+  return mysql_insert_id(&mysql);
 }
 
 void parse_db_time(struct tm* buf, const char* str) {
@@ -87,12 +72,28 @@ void make_db_time(char* buf, const struct tm* tm) {
   strftime(buf, 20, "%Y-%m-%d %H:%M:%S", tm);
 }
 
-int query(const char* stmt) {
-  return mysql_query(&mysql, stmt);
-}
 
-unsigned long last_insert_id() {
-  return mysql_insert_id(&mysql);
+int select_str(char* buf, const char* stmt) {
+  MYSQL_RES* res;
+  MYSQL_ROW row;
+    
+  if(query(stmt) == 0) {
+    res = mysql_use_result(&mysql);
+    row = mysql_fetch_row(res);
+
+    if(row == NULL) {
+      mysql_free_result(res);
+      return 1;
+    }
+    else {
+      strcpy(buf, row[0]);
+      mysql_free_result(res);
+      return 0;
+    }
+  }
+  else {
+    return 2;
+  }
 }
 
 int select_model(void* model, const char* stmt, void (*map_row)(void*, char**)) {
@@ -140,6 +141,8 @@ int select_all_models(void* models, const char* stmt, void (*map_row)(void*, cha
     return 1;
   }
 }
+
+// db independent - move?
 
 int insert_model(void* model, const char* stmt) {
   struct model* m = model;
