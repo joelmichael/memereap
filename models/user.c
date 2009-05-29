@@ -27,7 +27,7 @@ int select_user_by_id(struct user* user, const char* id) {
 }
 
 int select_user_by_login(struct user* user, const char* login) {
-  escape_str(esc[0], login);
+  stresc(esc[0], login);
   sprintf(stbf, "select * from users where login = '%s'", esc[0]);
   return select_user(user, stbf);
 }
@@ -41,7 +41,7 @@ void set_user_id(struct user* user, const char* id) {
 
 void set_user_login(struct user* user, const char* login) {
   strcpy(user->login, login);
-  escape_str(user->login_esc, login);
+  stresc(user->login_esc, login);
 }
 
 void set_user_created_at(struct user* user, const char* created_at) {

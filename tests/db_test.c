@@ -5,11 +5,11 @@
 
 #include "lib/db.h"
 
-void test_escape_str() {
+void test_stresc() {
   const char* str = "foo'bar\\;\"";
   char escaped[32];
   
-  escape_str(escaped, str);
+  stresc(escaped, str);
   assert(strcmp(escaped, "foo\\'bar\\\\;\\\"") == 0);
 }
 
@@ -43,7 +43,7 @@ void test_mysql_time() {
 int main(int argc, char** argv) {
   connect_db("memereap_test");
   
-  test_escape_str();
+  test_stresc();
   test_select_str();
   test_mysql_time();
   

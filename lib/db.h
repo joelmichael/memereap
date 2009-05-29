@@ -16,7 +16,7 @@ void connect_db(const char* db);
 
 void disconnect_db();
 
-void escape_str(char* to, const char* restrict from);
+void stresc(char* to, const char* restrict from);
 
 int select_str(char* buf, const char* stmt);
 

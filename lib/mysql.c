@@ -31,7 +31,7 @@ void disconnect_db() {
   mysql_close(&mysql);
 }
 
-void escape_str(char* to, const char* restrict from) {
+void stresc(char* to, const char* restrict from) {
   mysql_real_escape_string(&mysql, to, from, strlen(from));
 }
 
