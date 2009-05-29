@@ -1,7 +1,6 @@
 #include "routes.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include "lib/response.h"
@@ -12,13 +11,13 @@ void route(const char* host, const char* uri, const char* method, const char* re
     //handle_new_user(method);
   }
   else if(strstr(uri, "/users/edit/") == uri) {
-    //handle_edit_user(atoi(uri+12), method);
+    //handle_edit_user(uri+12, method);
   }
   else if(strstr(uri, "/users/") == uri) {
-    handle_show_user(atoi(uri+7));
+    handle_show_user(uri+7);
   }
   else if(strstr(uri, "/users/delete/") == uri) {
-    //handle_delete_user(atoi(uri+14));
+    //handle_delete_user(uri+14);
   }
   else {
     set_response_code(404);

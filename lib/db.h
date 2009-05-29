@@ -4,10 +4,13 @@
 #include <time.h>
 
 // handy generic statement buffer
-char sb[1024];
+char sb[2048];
 
-// handy generic buffer for escaping inputs
-char esc[512][32];
+// handy generic buffer for escaping select conditions
+char esc[512][8];
+
+// handy buffer for converting last insert id
+char insid[32];
 
 void connect_db(const char* db);
 
