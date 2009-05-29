@@ -50,7 +50,7 @@ void set_user_created_at(struct user* user, const char* created_at) {
 
 int insert_user(struct user* user) {
   sprintf(stbf, "insert into users (login) values ('%s')", user->login_esc);
-  return insert_model((struct model*)user, stbf);
+  return insert_model(user, stbf);
 }
 
 int update_user(struct user* user) {

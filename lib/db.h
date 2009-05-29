@@ -34,8 +34,8 @@ int select_model(void* model, const char* stmt, void (*map_row)(void*, char**));
 
 int select_all_models(void* models, int struct_size, const char* stmt, void (*map_row)(void*, char**), int limit);
 
-int insert_model(struct model* model, const char* stmt);
+int insert_model(void* model, const char* stmt);
 
-void set_model_id(struct model* model, const char* id);
+void set_model_id(void* model, const char* id);
 
 #endif
