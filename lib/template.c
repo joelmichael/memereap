@@ -31,7 +31,7 @@ struct tcache* cache_template(const char* filename) {
   tc->first = NULL;
   tc->last = NULL;
   
-  strcpy(path, "../views/");
+  strcpy(path, "../templates/");
   strcat(path, filename);
   strcpy(tc->filename, filename);
       

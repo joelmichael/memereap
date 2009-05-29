@@ -6,7 +6,8 @@ all:	public/memereap.cgi
 
 public/memereap.cgi:	lib/cgi.o lib/db.o lib/model.o lib/response.o lib/routes.o lib/template.o\
 			models/user.o\
-			controllers/user_controller.o
+			controllers/user_controller.o\
+			views/user_views.o
 			cc $(LDFLAGS) -o $@ $^
 
 check:	tests/bin/db_test tests/bin/user_test reload
@@ -26,5 +27,5 @@ dump:
 	mysqldump -u root memereap_test > db/memereap_test.sql
 			
 clean:	
-	rm -f public/memereap.cgi tests/bin/* lib/*.o models/*.o controllers/*.o tests/*.o
+	rm -f public/memereap.cgi tests/bin/* lib/*.o models/*.o controllers/*.o views/*.o tests/*.o
 
