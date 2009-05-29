@@ -5,13 +5,15 @@
 #include <string.h>
 #include "lib/db.h"
 
-// selects
+// static
 
 static void map_row(void* model, char** row) {
   set_user_id(model, row[0]);
   set_user_login(model, row[1]);
   set_user_created_at(model, row[2]);
 }
+
+// selects
 
 int select_user(struct user* user, const char* stmt) {
   return select_model(user, stmt, map_row);
@@ -32,7 +34,7 @@ int select_user_by_login(struct user* user, const char* login) {
   return select_user(user, stbf);
 }
 
-// change attributes
+// attributes
 
 void set_user_id(struct user* user, const char* id) {
   strcpy(user->id, id);

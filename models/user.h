@@ -22,7 +22,7 @@ int select_user_by_id(struct user* user, const char* id);
 
 int select_user_by_login(struct user* user, const char* login);
 
-// change attributes
+// attributes
 
 void set_user_id(struct user* user, const char* id);
 
