@@ -21,8 +21,9 @@ int select_model(void* model, const char* stmt, void (*map_row)(void*, MYSQL_ROW
       return 0;
     }
   }
-  else
+  else {
     return 2;
+  }
 }
 
 int select_all_models(void* models, const int struct_size, const char* stmt, void (*map_row)(void*, MYSQL_ROW),
@@ -44,6 +45,7 @@ int select_all_models(void* models, const int struct_size, const char* stmt, voi
     mysql_free_result(res);
     return 0;
   }
-  else
+  else {
     return 1;
+  }
 }

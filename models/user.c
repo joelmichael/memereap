@@ -38,8 +38,9 @@ int insert_user(struct user* user) {
     user->id = mysql_insert_id(&mysql);
     return 0;
   }
-  else
+  else {
     return 1;
+  }
 }
 
 int update_user(struct user* user) {
