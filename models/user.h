@@ -11,9 +11,9 @@ struct user {
   char created_at_str[32];
 };
 
-int select_user(struct user* user, char* stmt);
+int select_user(struct user* user, const char* stmt);
 
-int select_all_users(struct user* users, char* stmt, int limit);
+int select_all_users(struct user* users, const char* stmt, int limit);
 
 int insert_user(struct user* user);
 
@@ -23,6 +23,6 @@ int delete_user(int id);
 
 int select_user_by_id(struct user* user, int id);
 
-int select_user_by_login(struct user* user, char* login);
+int select_user_by_login(struct user* user, const char* login);
 
 #endif

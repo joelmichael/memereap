@@ -70,7 +70,7 @@ int select_user_by_id(struct user* user, int id) {
   return select_user(user, stmt);
 }
 
-int select_user_by_login(struct user* user, char* login) {
+int select_user_by_login(struct user* user, const char* login) {
   char stmt[256];
   char escaped[32];
   
