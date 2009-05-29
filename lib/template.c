@@ -184,6 +184,7 @@ static void free_tvars() {
   
   while(tv != NULL) {
     next = tv->next;
+    free(tv->value);
     free(tv);
     tv = next;
   }
