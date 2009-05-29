@@ -12,29 +12,10 @@
 static struct tvar* first_tvar;
 static struct tvar* last_tvar;
 
-void cache_template(struct tcache* tc, const char* filename) {
-  FILE* file;
-  struct stat st;
-  char path[42];
-  char line[LINE_MAX];
-  int length;
-  struct tnode* last = tc->first;
-  
-  strcpy(path, "../templates/");
-  strcat(path, filename);
-  strcpy(tc->filename, filename);
-  
-  stat(path, &st);
-  tc->length = st.st_size;
-    
-  file = fopen(path, "r");
-
-  while(!feof(file)) {
-    fgets(line, LINE_MAX, file);
-    parse_line(tc, line);
+void use_template(struct tcache* tc, const char* filename) {
+  if(tc->first == NULL) {
+    cache_template(tc, filename);
   }
-
-  fclose(file);
 }
 
 void add_tvar(const char* name, const char* value) {
@@ -59,8 +40,8 @@ void add_tvar(const char* name, const char* value) {
 // assume user is competent enough to add all used variables...?
 // or make tvars a linked list?
 
-void print_tcache(struct tcache* tc) {
-  struct tnode* tn = tc->first;
+void print_template(struct tcache tc) {
+  struct tnode* tn = tc.first;
   struct tvar* tv = first_tvar;
   
   while(tn != NULL) {
@@ -87,6 +68,31 @@ void print_tcache(struct tcache* tc) {
 
 // create tnodes out of the line
 // could use more protection against {{ at the end of a line
+
+static void cache_template(struct tcache* tc, const char* filename) {
+  FILE* file;
+  struct stat st;
+  char path[42];
+  char line[LINE_MAX];
+  int length;
+  struct tnode* last = tc->first;
+  
+  strcpy(path, "../templates/");
+  strcat(path, filename);
+  strcpy(tc->filename, filename);
+  
+  stat(path, &st);
+  tc->length = st.st_size;
+    
+  file = fopen(path, "r");
+
+  while(!feof(file)) {
+    fgets(line, LINE_MAX, file);
+    parse_line(tc, line);
+  }
+
+  fclose(file);
+}
 
 static void parse_line(struct tcache* tc, const char* line) {
   char* ptr = line;

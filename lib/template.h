@@ -5,7 +5,7 @@
 #define VARNAME_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
 
 struct tcache {
-  char filename[24];
+  char filename[32];
   struct tnode* first = NULL;
   struct tnode* last = NULL;
 };
@@ -22,10 +22,10 @@ struct tvar {
   struct tvar* next;
 };
 
-void cache_template(struct tcache* tc, const char* filename);
+void use_template(struct tcache* tc, const char* filename);
 
-void set_tvar(struct tvar* tv, const char* name, const char* value);
+void add_tvar(const char* name, const char* value);
 
-void print_tcache(struct tcache* tc, struct tvar* tvars, const int tvar_count);
+void print_template(struct tcache tc);
 
 #endif
