@@ -6,7 +6,7 @@
 #include <time.h>
 #include <mysql.h>
 
-MYSQL mysql;
+static MYSQL mysql;
 
 void connect_db(const char* db) {
   MYSQL* conn = 
@@ -35,7 +35,7 @@ int select_str(char* buf, const char* stmt) {
   MYSQL_RES* res;
   MYSQL_ROW row;
     
-  if(mysql_query(&mysql, stmt) == 0) {
+  if(query(stmt) == 0) {
     res = mysql_use_result(&mysql);
     row = mysql_fetch_row(res);
 
@@ -54,7 +54,7 @@ int select_str(char* buf, const char* stmt) {
   }
 }
 
-void parse_mysql_time(struct tm* buf, const char* str) {
+void parse_db_time(struct tm* buf, const char* str) {
   // 2009-05-20 18:57:18
   char tmp[5];
   
@@ -79,6 +79,14 @@ void parse_mysql_time(struct tm* buf, const char* str) {
   buf->tm_sec = atoi(tmp);
 }
 
-void make_mysql_time(char* buf, const struct tm* tm) {
+void make_db_time(char* buf, const struct tm* tm) {
   strftime(buf, 20, "%Y-%m-%d %H:%M:%S", tm);
+}
+
+int query(const char* stmt) {
+  return mysql_query(&mysql, stmt);
+}
+
+unsigned long last_insert_id() {
+  return mysql_insert_id(&mysql);
 }

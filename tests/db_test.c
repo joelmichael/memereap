@@ -26,7 +26,7 @@ void test_mysql_time() {
   struct tm tm;
   char str[20];
   
-  parse_mysql_time(&tm, "2009-05-20 19:45:06");
+  parse_db_time(&tm, "2009-05-20 19:45:06");
   
   assert(tm.tm_year == 2009 - 1900);
   assert(tm.tm_mon == 5 - 1);
@@ -35,7 +35,7 @@ void test_mysql_time() {
   assert(tm.tm_min == 45);
   assert(tm.tm_sec == 6);
   
-  make_mysql_time(str, &tm);
+  make_db_time(str, &tm);
   
   assert(strcmp(str, "2009-05-20 19:45:06") == 0);
 }

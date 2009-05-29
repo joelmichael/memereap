@@ -6,7 +6,7 @@ int select_model(void* model, const char* stmt, void (*map_row)(void*, MYSQL_ROW
   MYSQL_RES* res;
   MYSQL_ROW row;
     
-  if(mysql_query(&mysql, stmt) == 0) {
+  if(query(stmt) == 0) {
     res = mysql_use_result(&mysql);
     row = mysql_fetch_row(res);
     
@@ -32,7 +32,7 @@ int select_all_models(void* models, int struct_size, const char* stmt, void (*ma
   MYSQL_ROW row;
   int i = 0;
   
-  if(mysql_query(&mysql, stmt) == 0) {
+  if(query(stmt) == 0) {
     res = mysql_use_result(&mysql);
 
     while((row = mysql_fetch_row(res)) && i < limit) {

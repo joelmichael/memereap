@@ -7,6 +7,7 @@ struct user {
   int id;
   char id_str[16];
   char login[24];
+  char login_esc[24]
   struct tm created_at;
   char created_at_str[32];
 };
