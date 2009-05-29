@@ -1,4 +1,4 @@
-#include "views/user_views.h"
+#include "user_views.h"
 
 #include "lib/template.h"
 

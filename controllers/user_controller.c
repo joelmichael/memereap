@@ -1,4 +1,4 @@
-#include "controllers/user_controller.h"
+#include "user_controller.h"
 
 #include "lib/response.h"
 #include "models/user.h"
