@@ -28,6 +28,8 @@ struct tcache* cache_template(const char* filename) {
   struct tcache* tc;
   
   tc = (struct tcache*)malloc(sizeof(struct tcache));
+  tc->first = NULL;
+  tc->last = NULL;
   
   strcpy(path, "../views/");
   strcat(path, filename);
@@ -49,6 +51,7 @@ void add_tvar(const char* name, char* value) {
   struct tvar* tv;
   
   tv = (struct tvar*)malloc(sizeof(struct tvar));
+  tv->next = NULL;
   
   strcpy(tv->name, name);
   tv->value = value;
@@ -59,6 +62,7 @@ void add_tvar(const char* name, char* value) {
   else {
     last_tvar->next = tv;
   }
+  
   last_tvar = tv;
 }
 
@@ -69,13 +73,16 @@ void add_tvar(const char* name, char* value) {
 
 void print_tcache(struct tcache* tc) {
   struct tnode* tn = tc->first;
-  struct tvar* tv = first_tvar;
+  struct tvar* tv;
   
   while(tn != NULL) {
     if(tn->text == NULL) {
+      tv = first_tvar;
+      
       while(tv != NULL) {
         if(strcmp(tn->varname, tv->name) == 0) {
           printf("%s", tv->value);
+          break;
         }
         
         tv = tv->next;
@@ -151,17 +158,18 @@ static void add_text_tnode(struct tcache* tc, char* text, int textlen) {
     oldtext = tn->text;
     oldtextlen = strlen(oldtext);
     tn->text = (char*)malloc(oldtextlen + textlen + 1);
-    strncpy(tn->text, text, oldtextlen + textlen);
+    strncpy(tn->text, oldtext, oldtextlen);
+    strncpy(tn->text+oldtextlen, text, textlen);
     tn->text[oldtextlen + textlen] = '\0';
   }
   else {
     tn = (struct tnode*)malloc(sizeof(struct tnode));
+    tn->next = NULL;
     tn->text = (char*)malloc(textlen+1);
     strncpy(tn->text, text, textlen);
     tn->text[textlen] = '\0';
+    add_tnode(tc, tn);
   }
-  
-  add_tnode(tc, tn);
 }
 
 static void add_var_tnode(struct tcache* tc, char* varname, int varlen) {
@@ -169,13 +177,15 @@ static void add_var_tnode(struct tcache* tc, char* varname, int varlen) {
   
   tn = (struct tnode*)malloc(sizeof(struct tnode));
   tn->varname = (char*)malloc(varlen+1);
+  tn->next = NULL;
   strncpy(tn->varname, varname, varlen);
   tn->varname[varlen] = '\0';
+  tn->text = NULL;
   
   add_tnode(tc, tn);
 }
 
-static void add_tnode(struct tcache* tc, struct tnode* tn) {
+static void add_tnode(struct tcache* tc, struct tnode* tn) {  
   if(tc->first == NULL) {
     tc->first = tn;
   }
@@ -191,7 +201,7 @@ static void free_tvars() {
   
   while(tv != NULL) {
     next = tv->next;
-    free(tv->value);
+    //free(tv->value);
     free(tv);
     tv = next;
   }
