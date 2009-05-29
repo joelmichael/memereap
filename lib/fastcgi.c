@@ -1,5 +1,3 @@
-#include "fastcgi.h"
-
 #include <fcgi_stdio.h>
 #include <stdlib.h>
 #include "lib/routes.h"
