@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
   test_update_user();
   test_delete_user();
   
-  mysql_close(&mysql);
+  disconnect_db();
   
   return EXIT_SUCCESS;
 }

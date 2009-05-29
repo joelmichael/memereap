@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
   test_select_str();
   test_mysql_time();
   
-  mysql_close(&mysql);
+  disconnect_db();
   
   return EXIT_SUCCESS;
 }

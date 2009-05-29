@@ -3,20 +3,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <mysql.h>
 
 #include "lib/db.h"
-#include "lib/model.h"
 
-static void map_row(void* model, MYSQL_ROW row) {
+// selects
+
+static void map_row(void* model, char** row) {
   struct user* user = model;
   
-  user->id = atoi(row[0]);
-  strcpy(user->id_str, row[0]);
-  strcpy(user->login, row[1]);
-  escape_str(user->login_esc, row[1]);
-  parse_db_time(&user->created_at, row[2]);
-  strcpy(user->created_at_str, row[2]);
+  set_user_id(user, atoi(row[0]));
+  set_user_login(user, row[1]);
+  set_user_created_at(user, row[2]);
 }
 
 int select_user(struct user* user, const char* stmt) {
@@ -27,16 +24,43 @@ int select_all_users(struct user* users, const char* stmt, int limit) {
   return select_all_models(users, sizeof(struct user), stmt, map_row, limit);
 }
 
+int select_user_by_id(struct user* user, int id) {  
+  sprintf(sb, "select * from users where id = %d", id);
+  return select_user(user, sb);
+}
+
+int select_user_by_login(struct user* user, const char* login) {
+  escape_str(esc[0], login);
+  sprintf(sb, "select * from users where login = '%s'", esc[0]);
+  return select_user(user, sb);
+}
+
+// change attributes
+
+void set_user_id(struct user* user, int id) {
+  user->id = id;
+  sprintf(user->id_str, "%d", id);
+}
+
+void set_user_login(struct user* user, const char* login) {
+  strcpy(user->login, login);
+  escape_str(user->login_esc, login);
+}
+
+void set_user_created_at(struct user* user, const char* created_at_str) {
+  parse_db_time(&user->created_at, created_at_str);
+  strcpy(user->created_at_str, created_at_str);
+}
+
+// writes
+
 int insert_user(struct user* user) {
-  char stmt[256];
-  char escaped_login[sizeof(user->login)*2+1];
+  escape_str(esc[0], user->login);
   
-  escape_str(escaped_login, user->login);
+  sprintf(sb, "insert into users (login) values ('%s')", esc[0]);
   
-  sprintf(stmt, "insert into users (login) values ('%s')", escaped_login);
-  
-  if(query(stmt) == 0) {
-    user->id = mysql_insert_id(&mysql);
+  if(query(sb) == 0) {
+    set_user_id(user, last_insert_id());
     return 0;
   }
   else {
@@ -52,16 +76,4 @@ int update_user(struct user* user) {
 int delete_user(int id) {  
   sprintf(sb, "delete from users where id = %d", id);
   return query(sb);
-}
-
-int select_user_by_id(struct user* user, int id) {  
-  sprintf(sb, "select * from users where id = %d", id);
-  return select_user(user, sb);
-}
-
-int select_user_by_login(struct user* user, const char* login) {
-  char escaped[32];
-  escape_str(escaped, login);
-  sprintf(sb, "select * from users where login = '%s'", escaped);
-  return select_user(user, sb);
 }

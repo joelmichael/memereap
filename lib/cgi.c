@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
   
   route(host, uri, method, referer);
   
-  mysql_close(&mysql);
+  disconnect_db();
     
   return EXIT_SUCCESS;
 }

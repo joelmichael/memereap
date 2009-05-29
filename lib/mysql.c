@@ -27,6 +27,10 @@ void connect_db(const char* db) {
   }
 }
 
+void disconnect_db() {
+  mysql_close(&mysql);
+}
+
 void escape_str(char* to, const char* restrict from) {
   mysql_real_escape_string(&mysql, to, from, strlen(from));
 }
@@ -89,4 +93,50 @@ int query(const char* stmt) {
 
 unsigned long last_insert_id() {
   return mysql_insert_id(&mysql);
+}
+
+int select_model(void* model, const char* stmt, void (*map_row)(void*, char**)) {
+  MYSQL_RES* res;
+  MYSQL_ROW row;
+    
+  if(query(stmt) == 0) {
+    res = mysql_use_result(&mysql);
+    row = mysql_fetch_row(res);
+    
+    if(row == NULL) {
+      mysql_free_result(res);
+      return 1;
+    }
+    else {
+      (*map_row)(model, (char**)row);
+      
+      mysql_free_result(res);
+      return 0;
+    }
+  }
+  else {
+    return 2;
+  }
+}
+
+int select_all_models(void* models, int struct_size, const char* stmt, void (*map_row)(void*, char**), int limit) {
+  MYSQL_RES* res;
+  MYSQL_ROW row;
+  int i = 0;
+  
+  if(query(stmt) == 0) {
+    res = mysql_use_result(&mysql);
+
+    while((row = mysql_fetch_row(res)) && i < limit) {
+      (*map_row)((char*)models+(i*struct_size), (char**)row);
+      
+      i++;
+    }
+    
+    mysql_free_result(res);
+    return 0;
+  }
+  else {
+    return 1;
+  }
 }
