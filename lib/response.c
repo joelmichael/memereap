@@ -1,6 +1,6 @@
 #include "response.h"
 
-#include <stdio.h>
+#include <fcgi_stdio.h>
 #include <string.h>
 
 static int response_code = 200;

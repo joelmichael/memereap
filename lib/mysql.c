@@ -1,6 +1,6 @@
 #include "db.h"
 
-#include <stdio.h>
+#include <fcgi_stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -71,7 +71,6 @@ void parse_db_time(struct tm* buf, const char* str) {
 void make_db_time(char* buf, const struct tm* tm) {
   strftime(buf, 20, "%Y-%m-%d %H:%M:%S", tm);
 }
-
 
 int select_str(char* buf, const char* stmt) {
   MYSQL_RES* res;

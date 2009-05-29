@@ -1,6 +1,6 @@
 #include "template.h"
 
-#include <stdio.h>
+#include <fcgi_stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
