@@ -1,7 +1,6 @@
 #include "lib/template.h"
 
 #include <stdio.h>
-#include <sys/stat.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -12,12 +11,17 @@
 static struct tvar* first_tvar;
 static struct tvar* last_tvar;
 
+static void parse_line(struct tcache* tc, char* line);
+static void add_text_tnode(struct tcache* tc, char* text, int textlen);
+static void add_var_tnode(struct tcache* tc, char* varname, int varlen);
+static void add_tnode(struct tcache* tc, struct tnode* tn);
+static void free_tvars();
+
 // create tnodes out of the line
 // could use more protection against {{ at the end of a line
 
 struct tcache* cache_template(const char* filename) {
   FILE* file;
-  struct stat st;
   char path[42];
   char line[LINE_MAX];
   int length;
@@ -28,10 +32,7 @@ struct tcache* cache_template(const char* filename) {
   strcpy(path, "../views/");
   strcat(path, filename);
   strcpy(tc->filename, filename);
-  
-  stat(path, &st);
-  tc->length = st.st_size;
-    
+      
   file = fopen(path, "r");
 
   while(!feof(file)) {
@@ -44,7 +45,7 @@ struct tcache* cache_template(const char* filename) {
   return tc;
 }
 
-void add_tvar(const char* name, const char* value) {
+void add_tvar(const char* name, char* value) {
   struct tvar* tv;
   
   tv = (struct tvar*)malloc(sizeof(struct tvar));
@@ -66,8 +67,8 @@ void add_tvar(const char* name, const char* value) {
 // assume user is competent enough to add all used variables...?
 // or make tvars a linked list?
 
-void print_tcache(struct tcache tc) {
-  struct tnode* tn = tc.first;
+void print_tcache(struct tcache* tc) {
+  struct tnode* tn = tc->first;
   struct tvar* tv = first_tvar;
   
   while(tn != NULL) {
@@ -92,12 +93,14 @@ void print_tcache(struct tcache tc) {
 
 // static functions
 
-static void parse_line(struct tcache* tc, const char* line) {
+static void parse_line(struct tcache* tc, char* line) {
   char* ptr = line;
   char* lastptr = line;
-  char* startptr, endptr;
+  char* startptr;
+  char* endptr;
   struct tnode* tn = tc->last;
-  int textlen, varlen;
+  int textlen;
+  int varlen;
   int linelen = strlen(line);
   
   while(ptr = strstr(ptr, "{{")) {
@@ -137,19 +140,19 @@ static void parse_line(struct tcache* tc, const char* line) {
   add_text_tnode(tc, lastptr, linelen - (lastptr - line));
 }
 
-static void add_text_tnode(struct tcache* tc, const char* text, const int textlen) {
+static void add_text_tnode(struct tcache* tc, char* text, int textlen) {
   struct tnode* tn;
   char* oldtext;
   int oldtextlen;
   
   // coalesce the previous text node if possible
-  if(tc->last != NULL && tc->last.text != NULL) {
-    tn = tc.last;
+  if(tc->last != NULL && tc->last->text != NULL) {
+    tn = tc->last;
     oldtext = tn->text;
     oldtextlen = strlen(oldtext);
     tn->text = (char*)malloc(oldtextlen + textlen + 1);
     strncpy(tn->text, text, oldtextlen + textlen);
-    tn->text[oldtextlen + textlen] = '\0'];
+    tn->text[oldtextlen + textlen] = '\0';
   }
   else {
     tn = (struct tnode*)malloc(sizeof(struct tnode));
@@ -158,10 +161,10 @@ static void add_text_tnode(struct tcache* tc, const char* text, const int textle
     tn->text[textlen] = '\0';
   }
   
-  add_tnode(tn);
+  add_tnode(tc, tn);
 }
 
-static void add_var_tnode(struct tcache* tc, const char* varname, const int varlen) {
+static void add_var_tnode(struct tcache* tc, char* varname, int varlen) {
   struct tnode* tn;
   
   tn = (struct tnode*)malloc(sizeof(struct tnode));
@@ -169,7 +172,7 @@ static void add_var_tnode(struct tcache* tc, const char* varname, const int varl
   strncpy(tn->varname, varname, varlen);
   tn->varname[varlen] = '\0';
   
-  add_tnode(tn);
+  add_tnode(tc, tn);
 }
 
 static void add_tnode(struct tcache* tc, struct tnode* tn) {

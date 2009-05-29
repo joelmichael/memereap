@@ -6,13 +6,13 @@
 
 struct tcache {
   char filename[32];
-  struct tnode* first = NULL;
-  struct tnode* last = NULL;
+  struct tnode* first;
+  struct tnode* last;
 };
 
 struct tnode {
-  struct tnode* next = NULL;
-  char* text = NULL;
+  struct tnode* next;
+  char* text;
   char* varname;
 };
 
@@ -22,10 +22,10 @@ struct tvar {
   struct tvar* next;
 };
 
-void use_template(struct tcache* tc, const char* filename);
+struct tcache* cache_template(const char* filename);
 
-void add_tvar(const char* name, const char* value);
+void add_tvar(const char* name, char* value);
 
-void print_template(struct tcache tc);
+void print_tcache(struct tcache* tc);
 
 #endif

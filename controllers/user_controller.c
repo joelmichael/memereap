@@ -6,12 +6,16 @@
 #include "lib/template.h"
 #include "models/user.h"
 
-static struct tcache* show_user_tcache = cache_template("users/show_user.html");
+static struct tcache* show_user_tcache;
 
 void handle_show_user(int id) {
   struct user user;
     
-  if(select_user_by_id(&user, id) == 0) {  
+  if(select_user_by_id(&user, id) == 0) {
+    if(show_user_tcache == NULL) {
+      show_user_tcache = cache_template("users/show_user.html");
+    }
+    
     print_headers();
     
     add_tvar("id", user.id_str);
