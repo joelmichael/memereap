@@ -1,4 +1,4 @@
-#include "fcgi.h"
+#include "fastcgi.h"
 
 #include <fcgi_stdio.h>
 #include <stdlib.h>

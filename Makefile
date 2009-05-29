@@ -4,7 +4,7 @@ FCGI_LDFLAGS = -L/opt/local/lib -lfcgi
 
 all:	public/memereap.fcgi
 
-public/memereap.fcgi:	lib/fcgi.o lib/db.o lib/response.o lib/routes.o lib/template.o\
+public/memereap.fcgi:	lib/fastcgi.o lib/db.o lib/response.o lib/routes.o lib/template.o\
 			models/user.o\
 			controllers/user_controller.o\
 			views/user_views.o
@@ -24,7 +24,7 @@ tests/bin/user_test:	tests/user_test.o lib/db.o models/user.o
 lib/db.o:	lib/mysql.c
 		cc $(CFLAGS) -I/opt/local/include/mysql5/mysql -c -o $@ $<
 
-lib/fcgi.o:	lib/fcgi.c
+lib/fastcgi.o:	lib/fastcgi.c
 		cc $(CFLAGS) -I/opt/local/include -c -o $@ $<
 
 reload:		
