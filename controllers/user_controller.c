@@ -7,7 +7,8 @@
 void handle_show_user(int id) {
   struct user* user;
     
-  if(select_user_by_id(user, id) == 0) {    
+  if(select_user_by_id(user, id) == 0) {
+    print_headers();
     print_show_user(user);
   }
   else {
