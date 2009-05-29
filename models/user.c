@@ -7,12 +7,10 @@
 
 // selects
 
-static void map_row(void* model, char** row) {
-  struct user* user = model;
-  
-  set_user_id(user, row[0]);
-  set_user_login(user, row[1]);
-  set_user_created_at(user, row[2]);
+static void map_row(void* model, char** row) {  
+  set_user_id(model, row[0]);
+  set_user_login(model, row[1]);
+  set_user_created_at(model, row[2]);
 }
 
 int select_user(struct user* user, const char* stmt) {

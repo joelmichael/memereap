@@ -4,7 +4,7 @@
 #include <time.h>
 
 // handy generic statement buffer
-char sb[2048];
+char stbf[2048];
 
 // handy generic buffer for escaping select conditions
 char esc[512][8];
