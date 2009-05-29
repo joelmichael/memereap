@@ -119,7 +119,7 @@ int select_model(void* model, const char* stmt, void (*map_row)(void*, char**)) 
   }
 }
 
-int select_all_models(void* models, int struct_size, const char* stmt, void (*map_row)(void*, char**), int limit) {
+int select_all_models(void* models, const char* stmt, void (*map_row)(void*, char**), int struct_size, int limit) {
   MYSQL_RES* res;
   MYSQL_ROW row;
   int i = 0;

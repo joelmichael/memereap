@@ -20,7 +20,7 @@ int select_user(struct user* user, const char* stmt) {
 }
 
 int select_all_users(struct user* users, const char* stmt, int limit) {
-  return select_all_models(users, sizeof(struct user), stmt, map_row, limit);
+  return select_all_models(users, stmt, map_row, sizeof(struct user), limit);
 }
 
 int select_user_by_id(struct user* user, const char* id) {  
