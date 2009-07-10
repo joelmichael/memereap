@@ -11,4 +11,6 @@ void set_content_type(const char* type);
 
 void print_404();
 
+void add_cookie(const char* name, const char* value);
+
 #endif

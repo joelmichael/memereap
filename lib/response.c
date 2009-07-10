@@ -2,12 +2,24 @@
 
 #include <fcgi_stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 static int response_code = 200;
 static char content_type[32] = "text/html";
 static char redirect_location[256];
 
+struct cookie {
+  char name[32];
+  char value[256];
+  struct cookie* next;
+};
+
+static struct cookie* head_cookie;
+
 void print_headers() {
+  struct cookie* c = head_cookie;
+  struct cookie* oldc;
+  
   printf("Status: ");
   
   switch(response_code) {
@@ -28,6 +40,16 @@ void print_headers() {
   }
   
   printf("Content-type: %s\n", content_type);
+  
+  while(c != NULL) {
+    printf("Set-Cookie: %s=%s\n", c->name, c->value);
+    oldc = c;
+    c = c->next;
+    free(oldc);
+  }
+  
+  head_cookie = NULL;
+    
   printf("\n");
 }
 
@@ -48,4 +70,16 @@ void print_404() {
   set_response_code(404);
   print_headers();
   printf("404 Not Found");
+}
+
+void add_cookie(const char* name, const char* value) {
+  struct cookie* new_cookie;
+  
+  new_cookie = (struct cookie*)malloc(sizeof(struct cookie));
+  
+  strcpy(new_cookie->name, name);
+  strcpy(new_cookie->value, value);
+  
+  new_cookie->next = head_cookie;
+  head_cookie = new_cookie;
 }
