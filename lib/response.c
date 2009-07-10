@@ -25,10 +25,6 @@ void print_headers() {
     
     case 404:
     printf("404 Not Found\n");
-    break;
-    
-    case 410:
-    printf("410 Gone\n");
   }
   
   printf("Content-type: %s\n", content_type);
