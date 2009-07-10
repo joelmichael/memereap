@@ -34,6 +34,7 @@ void print_headers() {
     
     case 403:
     printf("403 Forbidden\n");
+    break;
     
     case 404:
     printf("404 Not Found\n");
