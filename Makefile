@@ -3,7 +3,7 @@ LDFLAGS = -L/opt/local/lib/mysql5/mysql -lmysqlclient -L/opt/local/lib -lfcgi
 
 all:	public/memereap.fcgi
 
-public/memereap.fcgi:	lib/fastcgi.o lib/db.o lib/response.o lib/routes.o lib/template.o\
+public/memereap.fcgi:	lib/fastcgi.o lib/db.o lib/response.o lib/request.o lib/template.o\
 			models/user.o\
 			controllers/user_controller.o\
 			views/user_views.o

@@ -1,5 +1,7 @@
 #include "user_views.h"
 
+#include <fcgi_stdio.h>
+#include "lib/request.h"
 #include "lib/template.h"
 
 static struct tcache* show_user_tcache;
@@ -12,4 +14,6 @@ void print_show_user(struct user user) {
   add_tvar("created_at", user.created_at);
 
   print_tcache(show_user_tcache);
+  
+  printf("http_cookie: %s", getenv("HTTP_COOKIE"));
 }
