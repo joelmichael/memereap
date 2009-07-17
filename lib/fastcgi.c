@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
   connect_db("memereap");
   
   while(FCGI_Accept() >= 0) {
-    route_request();
+    process_request();
   }
   
   disconnect_db();

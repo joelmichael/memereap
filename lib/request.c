@@ -2,21 +2,22 @@
 
 #include <fcgi_stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "lib/response.h"
 #include "controllers/user_controller.h"
 
-struct cookie {
+struct param {
   char name[32];
   char value[256];
-  struct cookie* next;
+  struct param* next;
 };
 
-static struct cookie* head_cookie;
+static struct param* head_cookie;
 
 void free_cookie_list() {
-  struct cookie* c = head_cookie;
-  struct cookie* oldc;
+  struct param* c = head_cookie;
+  struct param* oldc;
   
   while(c != NULL) {
     oldc = c;
@@ -30,30 +31,34 @@ void free_cookie_list() {
 void make_cookie_list() {
   char* ptr = getenv("HTTP_COOKIE");
   char* term;
-  struct cookie* new_cookie;
-  int length;
+  struct param* new_cookie;
+  int len;
   
   free_cookie_list();
   
+  if(ptr == NULL) {
+    return;
+  }
+  
   while(*ptr != '\0') {
-    new_cookie = (struct cookie*)malloc(sizeof(struct cookie));
+    new_cookie = (struct param*)malloc(sizeof(struct param));
     
     // copy name portion into struct
     term = strchr(ptr, '=');
-    length = ptr + (term - ptr);
-    strncpy(new_cookie->name, ptr, length+1);
-    new_cookie->name[length] = '\0';
-    ptr += length + 1;
+    len = term - ptr;
+    strncpy(new_cookie->name, ptr, len+1);
+    new_cookie->name[len] = '\0';
+    ptr = term + 1;
     
     // copy value portion into struct
     term = strchr(ptr, ';');
     if(term == NULL) {
       term = strchr(ptr, '\0');
     }
-    length = ptr + (term - ptr);
-    strncpy(new_cookie->value, ptr, length+1);
-    new_cookie->value[length] = '\0';
-    ptr += length;
+    len = term - ptr;
+    strncpy(new_cookie->value, ptr, len+1);
+    new_cookie->value[len] = '\0';
+    ptr = term;
     
     // add struct to linked list
     new_cookie->next = head_cookie;
@@ -69,17 +74,18 @@ void make_cookie_list() {
   }
 }
 
-char* get_cookie(const char* name) {
-  struct cookie* c = head_cookie;
+int get_cookie(char* buf, const char* name) {
+  struct param* c = head_cookie;
   
   while(c != NULL) {
     if(strcmp(c->name, name) == 0) {
-      return c->value;
+      strcpy(buf, c->value);
+      return 0;
     }
     c = c->next;
   }
   
-  return NULL;
+  return 1;
 }
 
 void route_request() {
@@ -100,4 +106,9 @@ void route_request() {
   else {
     print_404();
   }
+}
+
+void process_request() {
+  make_cookie_list();
+  route_request();
 }

@@ -6,7 +6,10 @@
 
 static struct tcache* show_user_tcache;
 
-void print_show_user(struct user user) {  
+void print_show_user(struct user user) {
+  char test[32];
+  char bar[32];
+  
   use_template(show_user_tcache, "users/show_user.html");
   
   add_tvar("id", user.id);
@@ -15,5 +18,9 @@ void print_show_user(struct user user) {
 
   print_tcache(show_user_tcache);
   
-  printf("http_cookie: %s", getenv("HTTP_COOKIE"));
+  get_cookie(test, "test");
+  get_cookie(bar, "bar");
+  
+  printf("test: %s\n", test);
+  printf("bar: %s\n", bar);
 }
