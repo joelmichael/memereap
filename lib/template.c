@@ -4,7 +4,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-// this loads the template up into a data structure for fast substitution
+#define LINE_MAX 512
+#define VARNAME_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+
+// this loads the template up into a simple data structure for fast substitution
 // mallocs a bunch of stuff but we don't have to free it because it's permanent until program exit
 // basically a linked list of nodes containing either text or a variable for substitution
 
@@ -66,9 +69,7 @@ void add_tvar(const char* name, char* value) {
 }
 
 // this does all the var tnode substitutions and prints the tcache
-// would like to avoid the tvar_count
-// assume user is competent enough to add all used variables...?
-// or make tvars a linked list?
+// it then frees the tvars
 
 void print_tcache(struct tcache* tc) {
   struct tnode* tn = tc->first;
@@ -148,16 +149,13 @@ static void parse_line(struct tcache* tc, char* line) {
 
 static void add_text_tnode(struct tcache* tc, char* text, int textlen) {
   struct tnode* tn;
-  char* oldtext;
   int oldtextlen;
   
   // coalesce the previous text node if possible
   if(tc->last != NULL && tc->last->text != NULL) {
     tn = tc->last;
-    oldtext = tn->text;
-    oldtextlen = strlen(oldtext);
-    tn->text = (char*)malloc(oldtextlen + textlen + 1);
-    strncpy(tn->text, oldtext, oldtextlen);
+    oldtextlen = strlen(tn->text);
+    tn->text = (char*)realloc(tn->text, oldtextlen + textlen + 1);
     strncpy(tn->text+oldtextlen, text, textlen);
     tn->text[oldtextlen + textlen] = '\0';
   }

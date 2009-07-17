@@ -20,8 +20,6 @@ void route(const char* host, const char* uri, const char* method, const char* re
     //handle_delete_user(uri+14);
   }
   else {
-    set_response_code(404);
-    print_headers();
-    printf("404 Not Found\n");
+    print_404();
   }
 }

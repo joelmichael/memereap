@@ -1,9 +1,6 @@
 #ifndef template_h
 #define template_h
 
-#define LINE_MAX 512
-#define VARNAME_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
-
 #define use_template(tcache, filename) if(tcache == NULL) tcache = cache_template(filename)
 
 struct tcache {

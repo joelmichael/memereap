@@ -73,7 +73,7 @@ void print_404() {
   printf("404 Not Found");
 }
 
-void add_cookie(const char* name, const char* value) {
+void set_cookie(const char* name, const char* value) {
   struct cookie* new_cookie;
   
   new_cookie = (struct cookie*)malloc(sizeof(struct cookie));
