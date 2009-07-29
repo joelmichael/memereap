@@ -1,7 +1,7 @@
 #ifndef template_h
 #define template_h
 
-#define use_template(template, filename) if(template == NULL) template = cache_template(filename)
+#define use_template(template, filename) if(template == NULL) template = parse_template(filename)
 
 struct template {
   char filename[32];
@@ -21,10 +21,10 @@ struct tvar {
   struct tvar* next;
 };
 
-struct template* cache_template(const char* filename);
+struct template* parse_template(const char* filename);
 
 void add_tvar(const char* name, char* value);
 
-void print_template(struct template* tc);
+void print_template(struct template* template);
 
 #endif
