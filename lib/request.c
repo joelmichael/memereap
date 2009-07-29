@@ -14,19 +14,7 @@ struct param {
 };
 
 static struct param* head_cookie;
-
-void free_cookie_list() {
-  struct param* c = head_cookie;
-  struct param* oldc;
-  
-  while(c != NULL) {
-    oldc = c;
-    c = c->next;
-    free(oldc);
-  }
-  
-  head_cookie = NULL;
-}
+static struct param* head_param;
 
 void make_cookie_list() {
   char* ptr = getenv("HTTP_COOKIE");
@@ -109,6 +97,59 @@ void route_request() {
 }
 
 void process_request() {
+  free_param_lists();
   make_cookie_list();
   route_request();
+}
+
+int add_param(char* name, char* value) {
+  struct param* new_param;
+  
+  if(get_param(name) != 0) {
+    return 1;
+  }
+  else {
+    new_param = (struct param*)malloc(sizeof(struct param));
+    strcpy(new_param->name, name);
+    strcpy(new_param->value, value);
+    new_param->next = head_param;
+    head_param = new_param;
+    return 0;
+  }
+}
+
+int get_param(char* buf, const char* name) {
+  struct param* p = head_param;
+  
+  while(p != NULL) {
+    if(strcpy(p->name, name) == 0) {
+      strcpy(buf, p->value);
+      return 0;
+    }
+    p = p->next;
+  }
+  
+  return 1;
+}
+
+void free_param_lists() {
+  // frees both cookies and params
+  struct param* p = head_param;
+  struct param* oldp;
+  
+  while(p != NULL) {
+    oldp = p;
+    p = p->next;
+    free(oldp);
+  }
+  
+  p = head_cookie;
+  
+  while(p != NULL) {
+    oldp = p;
+    p = p->next;
+    free(oldp);
+  }
+  
+  head_param = NULL;
 }
