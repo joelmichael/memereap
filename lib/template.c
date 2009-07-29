@@ -14,39 +14,39 @@
 static struct tvar* first_tvar;
 static struct tvar* last_tvar;
 
-static void parse_line(struct template* tc, char* line);
-static void add_text_tnode(struct template* tc, char* text, int textlen);
-static void add_var_tnode(struct template* tc, char* varname, int varlen);
-static void add_tnode(struct template* tc, struct tnode* tn);
+static void parse_line(struct template* template, char* line);
+static void add_text_tnode(struct template* template, char* text, int textlen);
+static void add_var_tnode(struct template* template, char* varname, int varlen);
+static void add_tnode(struct template* template, struct tnode* tn);
 static void free_tvars();
 
 // create tnodes out of the line
 // could use more protection against {{ at the end of a line
 
-struct template* cache_template(const char* filename) {
+struct template* parse_template(const char* filename) {
   FILE* file;
   char path[42];
   char line[LINE_MAX];
   int length;
-  struct template* tc;
+  struct template* template;
   
-  tc = (struct template*)malloc(sizeof(struct template));
-  tc->first = NULL;
-  tc->last = NULL;
+  template = (struct template*)malloc(sizeof(struct template));
+  template->first = NULL;
+  template->last = NULL;
   
   strcpy(path, "../templates/");
   strcat(path, filename);
-  strcpy(tc->filename, filename);
+  strcpy(template->filename, filename);
       
   file = fopen(path, "r");
 
   while(fgets(line, LINE_MAX, file) != NULL) {
-    parse_line(tc, line);
+    parse_line(template, line);
   }
 
   fclose(file);
   
-  return tc;
+  return template;
 }
 
 void add_tvar(const char* name, char* value) {
@@ -71,8 +71,8 @@ void add_tvar(const char* name, char* value) {
 // this does all the var tnode substitutions and prints the template
 // it then frees the tvars
 
-void print_template(struct template* tc) {
-  struct tnode* tn = tc->first;
+void print_template(struct template* template) {
+  struct tnode* tn = template->first;
   struct tvar* tv;
   
   while(tn != NULL) {
@@ -100,12 +100,12 @@ void print_template(struct template* tc) {
 
 // static functions
 
-static void parse_line(struct template* tc, char* line) {
+static void parse_line(struct template* template, char* line) {
   char* ptr = line;
   char* lastptr = line;
   char* startptr;
   char* endptr;
-  struct tnode* tn = tc->last;
+  struct tnode* tn = template->last;
   int textlen;
   int varlen;
   int linelen = strlen(line);
@@ -128,11 +128,11 @@ static void parse_line(struct template* tc, char* line) {
       
       // create a text tnode of everything up to this point if there is anything
       if(textlen > 0) {
-        add_text_tnode(tc, lastptr, textlen);
+        add_text_tnode(template, lastptr, textlen);
       }
             
       // create a var tnode
-      add_var_tnode(tc, startptr, varlen);
+      add_var_tnode(template, startptr, varlen);
       
       ptr = endptr+2;
       lastptr = ptr;
@@ -144,16 +144,16 @@ static void parse_line(struct template* tc, char* line) {
   }
   
   // create a text tnode of whatever remains
-  add_text_tnode(tc, lastptr, linelen - (lastptr - line));
+  add_text_tnode(template, lastptr, linelen - (lastptr - line));
 }
 
-static void add_text_tnode(struct template* tc, char* text, int textlen) {
+static void add_text_tnode(struct template* template, char* text, int textlen) {
   struct tnode* tn;
   int oldtextlen;
   
   // coalesce the previous text node if possible
-  if(tc->last != NULL && tc->last->text != NULL) {
-    tn = tc->last;
+  if(template->last != NULL && template->last->text != NULL) {
+    tn = template->last;
     oldtextlen = strlen(tn->text);
     tn->text = (char*)realloc(tn->text, oldtextlen + textlen + 1);
     strncpy(tn->text+oldtextlen, text, textlen);
@@ -165,11 +165,11 @@ static void add_text_tnode(struct template* tc, char* text, int textlen) {
     tn->text = (char*)malloc(textlen+1);
     strncpy(tn->text, text, textlen);
     tn->text[textlen] = '\0';
-    add_tnode(tc, tn);
+    add_tnode(template, tn);
   }
 }
 
-static void add_var_tnode(struct template* tc, char* varname, int varlen) {
+static void add_var_tnode(struct template* template, char* varname, int varlen) {
   struct tnode* tn;
   
   tn = (struct tnode*)malloc(sizeof(struct tnode));
@@ -179,17 +179,17 @@ static void add_var_tnode(struct template* tc, char* varname, int varlen) {
   tn->varname[varlen] = '\0';
   tn->text = NULL;
   
-  add_tnode(tc, tn);
+  add_tnode(template, tn);
 }
 
-static void add_tnode(struct template* tc, struct tnode* tn) {  
-  if(tc->first == NULL) {
-    tc->first = tn;
+static void add_tnode(struct template* template, struct tnode* tn) {  
+  if(template->first == NULL) {
+    template->first = tn;
   }
   else {
-    tc->last->next = tn;
+    template->last->next = tn;
   }
-  tc->last = tn;
+  template->last = tn;
 }
 
 static void free_tvars() {
