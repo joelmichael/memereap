@@ -14,23 +14,23 @@
 static struct tvar* first_tvar;
 static struct tvar* last_tvar;
 
-static void parse_line(struct tcache* tc, char* line);
-static void add_text_tnode(struct tcache* tc, char* text, int textlen);
-static void add_var_tnode(struct tcache* tc, char* varname, int varlen);
-static void add_tnode(struct tcache* tc, struct tnode* tn);
+static void parse_line(struct template* tc, char* line);
+static void add_text_tnode(struct template* tc, char* text, int textlen);
+static void add_var_tnode(struct template* tc, char* varname, int varlen);
+static void add_tnode(struct template* tc, struct tnode* tn);
 static void free_tvars();
 
 // create tnodes out of the line
 // could use more protection against {{ at the end of a line
 
-struct tcache* cache_template(const char* filename) {
+struct template* cache_template(const char* filename) {
   FILE* file;
   char path[42];
   char line[LINE_MAX];
   int length;
-  struct tcache* tc;
+  struct template* tc;
   
-  tc = (struct tcache*)malloc(sizeof(struct tcache));
+  tc = (struct template*)malloc(sizeof(struct template));
   tc->first = NULL;
   tc->last = NULL;
   
@@ -68,10 +68,10 @@ void add_tvar(const char* name, char* value) {
   last_tvar = tv;
 }
 
-// this does all the var tnode substitutions and prints the tcache
+// this does all the var tnode substitutions and prints the template
 // it then frees the tvars
 
-void print_tcache(struct tcache* tc) {
+void print_template(struct template* tc) {
   struct tnode* tn = tc->first;
   struct tvar* tv;
   
@@ -100,7 +100,7 @@ void print_tcache(struct tcache* tc) {
 
 // static functions
 
-static void parse_line(struct tcache* tc, char* line) {
+static void parse_line(struct template* tc, char* line) {
   char* ptr = line;
   char* lastptr = line;
   char* startptr;
@@ -147,7 +147,7 @@ static void parse_line(struct tcache* tc, char* line) {
   add_text_tnode(tc, lastptr, linelen - (lastptr - line));
 }
 
-static void add_text_tnode(struct tcache* tc, char* text, int textlen) {
+static void add_text_tnode(struct template* tc, char* text, int textlen) {
   struct tnode* tn;
   int oldtextlen;
   
@@ -169,7 +169,7 @@ static void add_text_tnode(struct tcache* tc, char* text, int textlen) {
   }
 }
 
-static void add_var_tnode(struct tcache* tc, char* varname, int varlen) {
+static void add_var_tnode(struct template* tc, char* varname, int varlen) {
   struct tnode* tn;
   
   tn = (struct tnode*)malloc(sizeof(struct tnode));
@@ -182,7 +182,7 @@ static void add_var_tnode(struct tcache* tc, char* varname, int varlen) {
   add_tnode(tc, tn);
 }
 
-static void add_tnode(struct tcache* tc, struct tnode* tn) {  
+static void add_tnode(struct template* tc, struct tnode* tn) {  
   if(tc->first == NULL) {
     tc->first = tn;
   }

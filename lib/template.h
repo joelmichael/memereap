@@ -1,9 +1,9 @@
 #ifndef template_h
 #define template_h
 
-#define use_template(tcache, filename) if(tcache == NULL) tcache = cache_template(filename)
+#define use_template(template, filename) if(template == NULL) template = cache_template(filename)
 
-struct tcache {
+struct template {
   char filename[32];
   struct tnode* first;
   struct tnode* last;
@@ -21,10 +21,10 @@ struct tvar {
   struct tvar* next;
 };
 
-struct tcache* cache_template(const char* filename);
+struct template* cache_template(const char* filename);
 
 void add_tvar(const char* name, char* value);
 
-void print_tcache(struct tcache* tc);
+void print_template(struct template* tc);
 
 #endif
