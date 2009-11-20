@@ -5,7 +5,6 @@
 #include <stdlib.h>
 
 #define LINE_MAX 512
-#define VARNAME_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
 
 // this loads the template up into a simple data structure for fast substitution
 // mallocs a bunch of stuff but we don't have to free it because it's permanent until program exit
@@ -144,7 +143,8 @@ static void parse_line(struct template* template, char* line) {
   }
   
   // create a text tnode of whatever remains
-  add_text_tnode(template, lastptr, linelen - (lastptr - line));
+  textlen = linelen - (lastptr - line);
+  add_text_tnode(template, lastptr, textlen);
 }
 
 static void add_text_tnode(struct template* template, char* text, int textlen) {

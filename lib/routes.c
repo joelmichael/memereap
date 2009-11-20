@@ -16,23 +16,38 @@ void add_route(char* route_str, void (*action)()) {
   head_route = route;
 }
 
-struct route* parse_route_str(char* route_str) {
-  // /users/edit/:id
-  // /users/:action/:id
-  // include request library so we can add params
+// similar to basic rails routes
+// /users/edit/:id
+// /users/:action/:id
+// include request library so we can add params and get VARNAME_CHARS
+// something like that
   
+struct route* parse_route_str(char* route_str) {
   struct route* route;
   char* ptr = route_str;
   char* lastptr = route_str;
-  char* startptr;
-  char* endptr;
+  int varlen;
+  int textlen;
+  int routelen = strlen(route_str);
   
   route = (struct route*)malloc(sizeof(struct route));
   
   while(ptr = strstr(ptr, ":")) {
-    startptr = ptr + 1;
+    ptr++;
     
+    varlen = strspn(ptr, VARNAME_CHARS);
+    
+    // create a text node of everything up to this point
+    textlen = ptr - lastptr - 1;
+    add_text_rnode(route, lastptr, textlen);
+    
+    add_var_rnode(route, ptr, varlen);
+    ptr += varlen;
+    lastptr = ptr;
   }
+  
+  textlen = routelen - (lastptr - route_str);
+  add_text_rnode(route, ptr, textlen);
 }
 
 static void add_text_rnode(struct route* route, char* text, int textlen) {

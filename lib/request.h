@@ -1,6 +1,8 @@
 #ifndef request_h
 #define request_h
 
+#define VARNAME_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+
 void make_cookie_list();
 
 int get_cookie(char* buf, const char* name);
