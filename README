@@ -3,7 +3,5 @@ MemeReap is a Twitter clone written in C.
 This application is designed as a sample application from which a C web framework
 will be abstracted.
 
-=Compiling=
-
-This is very earily software.  It is is built on a Mac, using mysql and fcgi installed via MacPorts.
+This is very early software.  It is is built on a Mac, using mysql and fcgi installed via MacPorts.
 Without Makefile modification, it will only compile in this environment.
