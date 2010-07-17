@@ -7,7 +7,7 @@ void process_request();
 
 void make_cookie_list();
 
-char* get_cookie(char* name);
+char* cookie(char* name);
 
 void route_request();
 

@@ -66,7 +66,7 @@ void make_cookie_list() {
   }
 }
 
-char* get_cookie(char* name) {
+char* cookie(char* name) {
   struct param* c = head_cookie;
   
   while(c != NULL) {

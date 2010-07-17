@@ -10,7 +10,16 @@ public/memereap.fcgi:	scythe/fastcgi.o scythe/db.o scythe/mysql.o scythe/respons
 			controllers/user_controller.o\
 			views/user_views.o
 			cc $(LDFLAGS) -o $@ $^
-						
+
+scythe/mysql.o:		scythe/mysql.c
+			cc $(CFLAGS) -I/opt/local/include/mysql5/mysql -c -o $@ $<
+
+scythe/fastcgi.o:	scythe/fastcgi.c
+			cc $(CFLAGS) -I/opt/local/include -c -o $@ $<
+
+config/routes.o:	config/routes.c
+			cc $(CFLAGS) -c -o $@ $<
+												
 check:	tests/bin/db_test tests/bin/user_test tests/bin/route_test reload
 	tests/bin/db_test
 	tests/bin/user_test
@@ -25,15 +34,6 @@ tests/bin/user_test:	tests/user_test.o scythe/db.o scythe/mysql.o models/user.o
 tests/bin/route_test:	tests/route_test.o scythe/routes.o scythe/request.o scythe/response.o
 			cc $(LDFLAGS) -o $@ $^
 
-scythe/mysql.o:		scythe/mysql.c
-			cc $(CFLAGS) -I/opt/local/include/mysql5/mysql -c -o $@ $<
-
-scythe/fastcgi.o:	scythe/fastcgi.c
-			cc $(CFLAGS) -I/opt/local/include -c -o $@ $<
-		
-config/routes.o:	config/routes.c
-			cc $(CFLAGS) -c -o $@ $<
-
 reload:		
 	mysql -u root memereap_test < db/memereap_test.sql
 		
@@ -43,4 +43,3 @@ dump:
 clean:	
 	rm -f public/memereap.fcgi tests/bin/* scythe/*.o config/*.o
 	rm -f models/*.o controllers/*.o views/*.o tests/*.o
-
