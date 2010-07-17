@@ -6,7 +6,6 @@
 
 #include "lib/response.h"
 #include "lib/routes.h"
-#include "controllers/user_controller.h"
 
 struct param {
   char name[32];
@@ -96,7 +95,7 @@ void route_request() {
 int set_param(char* name, char* value) {
   struct param* new_param;
   
-  if(get_param(name) != NULL) {
+  if(param(name) != NULL) {
     return 1;
   }
   else {
@@ -109,7 +108,7 @@ int set_param(char* name, char* value) {
   }
 }
 
-char* get_param(char* name) {
+char* param(char* name) {
   struct param* p = head_param;
   
   while(p != NULL) {

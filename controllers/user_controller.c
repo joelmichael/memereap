@@ -6,7 +6,7 @@
 #include "views/user_views.h"
 
 void handle_show_user() {
-  const char* id = get_param("id");
+  const char* id = param("id");
   struct user user;
     
   if(select_user_by_id(&user, id) == 0) {

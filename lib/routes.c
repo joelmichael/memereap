@@ -47,8 +47,11 @@ struct route* parse_route_str(char* route_str) {
     lastptr = ptr;
   }
   
-  textlen = routelen - (lastptr - route_str);
-  add_text_rnode(route, lastptr, textlen);
+  // add whatever remains as a text node, if anything
+  if(lastptr != route_str + routelen) {
+    textlen = routelen - (lastptr - route_str);
+    add_text_rnode(route, lastptr, textlen);
+  }
   
   return route;
 }
@@ -117,6 +120,7 @@ void set_params_for_route(struct route* route, char* route_str) {
       strncpy(buf, ptr, varlen);
       buf[varlen] = '\0';
       set_param(rn->varname, buf);
+      ptr += varlen;
     }
     
     rn = rn->next;

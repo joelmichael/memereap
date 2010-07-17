@@ -13,7 +13,7 @@ void route_request();
 
 int set_param(char* name, char* value);
 
-char* get_param(char* name);
+char* param(char* name);
 
 void free_params_and_cookies();
 
