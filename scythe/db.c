@@ -13,7 +13,7 @@ int insert_model(void* model, const char* stmt) {
     return 0;
   }
   else {
-    return 1;
+    return -1;
   }
 }
 

@@ -16,7 +16,7 @@ void test_select_user() {
   assert(select_user_by_login(&user, "aristotle") == 0);
   assert(user.id_ul == 1);
   
-  assert(select_user_by_id(&user, "2") == 1);
+  assert(select_user_by_id(&user, "2") == -1);
   assert(strcmp(user.login, "aristotle") == 0);
 }
 
@@ -27,7 +27,7 @@ void test_insert_user() {
   
   assert(insert_user(&user) == 0);
   assert(user.id_ul == 2);
-  assert(insert_user(&user) == 1);
+  assert(insert_user(&user) == -1);
 }
 
 void test_select_all_users() {
@@ -58,7 +58,7 @@ void test_delete_user() {
   struct user user;
   
   assert(delete_user("2") == 0);
-  assert(select_user_by_id(&user, "2") == 1);
+  assert(select_user_by_id(&user, "2") == -1);
 }
 
 int main(int argc, char** argv) {

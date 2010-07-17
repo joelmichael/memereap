@@ -19,7 +19,7 @@ void test_select_str() {
   assert(select_str(buf, "select 'foo'") == 0);
   assert(strcmp(buf, "foo") == 0);
   
-  assert(select_str(buf, "bad sql") == 2);
+  assert(select_str(buf, "bad sql") == -2);
 }
 
 void test_mysql_time() {

@@ -82,7 +82,7 @@ int select_str(char* buf, const char* stmt) {
 
     if(row == NULL) {
       mysql_free_result(res);
-      return 1;
+      return -1;
     }
     else {
       strcpy(buf, row[0]);
@@ -91,7 +91,7 @@ int select_str(char* buf, const char* stmt) {
     }
   }
   else {
-    return 2;
+    return -2;
   }
 }
 
@@ -105,7 +105,7 @@ int select_model(void* model, const char* stmt, void (*map_row)(void*, char**)) 
     
     if(row == NULL) {
       mysql_free_result(res);
-      return 1;
+      return -1;
     }
     else {
       (*map_row)(model, (char**)row);
@@ -115,7 +115,7 @@ int select_model(void* model, const char* stmt, void (*map_row)(void*, char**)) 
     }
   }
   else {
-    return 2;
+    return -2;
   }
 }
 
@@ -137,6 +137,6 @@ int select_all_models(void* models, const char* stmt, void (*map_row)(void*, cha
     return 0;
   }
   else {
-    return 1;
+    return -1;
   }
 }

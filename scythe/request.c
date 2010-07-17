@@ -112,7 +112,7 @@ int set_param(char* name, char* value) {
   struct param* new_param;
   
   if(param(name) != NULL) {
-    return 1;
+    return -1;
   }
   else {    
     // prevent buffer overflow attack
@@ -127,7 +127,7 @@ int set_param(char* name, char* value) {
       return 0;
     }
     else {
-      return 2;
+      return -2;
     }
   }
 }
