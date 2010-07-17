@@ -17,12 +17,12 @@ static struct param* head_cookie;
 static struct param* head_param;
 
 void process_request() {
-  make_cookie_list();
+  set_cookies();
   route_request();
-  free_params_and_cookies();
+  free_params();
 }
 
-void make_cookie_list() {
+void set_cookies() {
   char* ptr = getenv("HTTP_COOKIE");
   char* term;
   struct param* new_cookie;
@@ -38,8 +38,13 @@ void make_cookie_list() {
     // copy name portion into struct
     term = strchr(ptr, '=');
     len = term - ptr;
-    strncpy(new_cookie->name, ptr, len+1);
-    new_cookie->name[len] = '\0';
+    
+    // prevent buffer overflow attack
+    if(len < 32) {
+      strncpy(new_cookie->name, ptr, len);
+      new_cookie->name[len] = '\0';
+    }
+    
     ptr = term + 1;
     
     // copy value portion into struct
@@ -48,13 +53,24 @@ void make_cookie_list() {
       term = strchr(ptr, '\0');
     }
     len = term - ptr;
-    strncpy(new_cookie->value, ptr, len+1);
-    new_cookie->value[len] = '\0';
+    
+    // prevent buffer overflow attack
+    if(len < 256) {
+      strncpy(new_cookie->value, ptr, len);
+      new_cookie->value[len] = '\0';
+    }
+    
     ptr = term;
     
-    // add struct to linked list
-    new_cookie->next = head_cookie;
-    head_cookie = new_cookie;
+    if(new_cookie->name == NULL || new_cookie->value == NULL) {
+      // free if it failed buffer overflow checks
+      free(new_cookie);
+    }
+    else {
+      // add new cookie to linked list
+      new_cookie->next = head_cookie;
+      head_cookie = new_cookie;
+    }
     
     // skip over delimiter and whitespace
     if(*ptr == ';') {
@@ -98,13 +114,21 @@ int set_param(char* name, char* value) {
   if(param(name) != NULL) {
     return 1;
   }
-  else {
-    new_param = (struct param*)malloc(sizeof(struct param));
-    strcpy(new_param->name, name);
-    strcpy(new_param->value, value);
-    new_param->next = head_param;
-    head_param = new_param;
-    return 0;
+  else {    
+    // prevent buffer overflow attack
+    if(strlen(name) < 32 && strlen(value) < 256) { 
+      new_param = (struct param*)malloc(sizeof(struct param));
+      
+      strcpy(new_param->name, name);
+      strcpy(new_param->value, value);
+      new_param->next = head_param;
+      head_param = new_param;
+      
+      return 0;
+    }
+    else {
+      return 2;
+    }
   }
 }
 
@@ -121,7 +145,7 @@ char* param(char* name) {
   return NULL;
 }
 
-void free_params_and_cookies() {
+void free_params() {
   struct param* p = head_param;
   struct param* oldp;
   

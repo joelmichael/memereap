@@ -5,7 +5,7 @@
 
 void process_request();
 
-void make_cookie_list();
+void set_cookies();
 
 char* cookie(char* name);
 
@@ -15,6 +15,6 @@ int set_param(char* name, char* value);
 
 char* param(char* name);
 
-void free_params_and_cookies();
+void free_params();
 
 #endif

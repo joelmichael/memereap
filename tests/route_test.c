@@ -26,7 +26,7 @@ void test_routes() {
   assert(route->action == example_action1);
   assert(param("id") == NULL);
   
-  free_params_and_cookies();
+  free_params();
   
   strcpy(route_str, "/example/2");
   route = determine_route(route_str);
@@ -35,7 +35,7 @@ void test_routes() {
   assert(route->action == example_action2);
   assert(strcmp(param("id"), "2") == 0);
   
-  free_params_and_cookies();
+  free_params();
   
   strcpy(route_str, "/foo/what/snap/urjfjf/f/f/f/hey");
   route = determine_route(route_str);
@@ -46,7 +46,7 @@ void test_routes() {
   assert(strcmp(param("baz"), "snap") == 0);
   assert(strcmp(param("dog"), "urjfjf/f/f/f") == 0);
   
-  free_params_and_cookies();
+  free_params();
   
   route = determine_route("/nope");
   assert(route == NULL);
