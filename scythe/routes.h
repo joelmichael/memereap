@@ -8,8 +8,8 @@ struct rnode {
 };
 
 struct route {
-  struct rnode* first;
-  struct rnode* last;
+  struct rnode* head;
+  struct rnode* tail;
   void (*action)();
   struct route* next;
 };

@@ -5,8 +5,8 @@
 
 struct template {
   char filename[32];
-  struct tnode* first;
-  struct tnode* last;
+  struct tnode* head;
+  struct tnode* tail;
 };
 
 struct tnode {

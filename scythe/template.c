@@ -11,8 +11,8 @@
 // mallocs a bunch of stuff but we don't have to free it because it's permanent until program exit
 // basically a linked list of nodes containing either text or a variable for substitution
 
-static struct tvar* first_tvar;
-static struct tvar* last_tvar;
+static struct tvar* head_tvar;
+static struct tvar* tail_tvar;
 
 static void parse_line(struct template* template, char* line);
 static void add_text_tnode(struct template* template, char* text, int textlen);
@@ -31,8 +31,8 @@ struct template* parse_template(const char* filename) {
   struct template* template;
   
   template = (struct template*)malloc(sizeof(struct template));
-  template->first = NULL;
-  template->last = NULL;
+  template->head = NULL;
+  template->tail = NULL;
   
   strcpy(path, "../templates/");
   strcat(path, filename);
@@ -58,26 +58,26 @@ void set_tvar(const char* name, char* value) {
   strcpy(tv->name, name);
   tv->value = value;
   
-  if(first_tvar == NULL) {
-    first_tvar = tv;
+  if(head_tvar == NULL) {
+    head_tvar = tv;
   }
   else {
-    last_tvar->next = tv;
+    tail_tvar->next = tv;
   }
   
-  last_tvar = tv;
+  tail_tvar = tv;
 }
 
 // this does all the var tnode substitutions and prints the template
 // it then frees the tvars
 
 void print_template(struct template* template) {
-  struct tnode* tn = template->first;
+  struct tnode* tn = template->head;
   struct tvar* tv;
   
   while(tn != NULL) {
     if(tn->text == NULL) {
-      tv = first_tvar;
+      tv = head_tvar;
       
       while(tv != NULL) {
         if(strcmp(tn->varname, tv->name) == 0) {
@@ -105,7 +105,7 @@ static void parse_line(struct template* template, char* line) {
   char* lastptr = line;
   char* startptr;
   char* endptr;
-  struct tnode* tn = template->last;
+  struct tnode* tn = template->tail;
   int textlen;
   int varlen;
   int linelen = strlen(line);
@@ -153,8 +153,8 @@ static void add_text_tnode(struct template* template, char* text, int textlen) {
   int oldtextlen;
   
   // coalesce the previous text node if possible
-  if(template->last != NULL && template->last->text != NULL) {
-    tn = template->last;
+  if(template->tail != NULL && template->tail->text != NULL) {
+    tn = template->tail;
     oldtextlen = strlen(tn->text);
     tn->text = (char*)realloc(tn->text, oldtextlen + textlen + 1);
     strncpy(tn->text+oldtextlen, text, textlen);
@@ -184,17 +184,17 @@ static void add_var_tnode(struct template* template, char* varname, int varlen) 
 }
 
 static void add_tnode(struct template* template, struct tnode* tn) {  
-  if(template->first == NULL) {
-    template->first = tn;
+  if(template->head == NULL) {
+    template->head = tn;
   }
   else {
-    template->last->next = tn;
+    template->tail->next = tn;
   }
-  template->last = tn;
+  template->tail = tn;
 }
 
 static void free_tvars() {
-  struct tvar* tv = first_tvar;
+  struct tvar* tv = head_tvar;
   struct tvar* next;
   
   while(tv != NULL) {
@@ -203,6 +203,6 @@ static void free_tvars() {
     tv = next;
   }
   
-  first_tvar = NULL;
-  last_tvar = NULL; 
+  head_tvar = NULL;
+  tail_tvar = NULL; 
 }

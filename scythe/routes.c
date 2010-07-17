@@ -62,7 +62,7 @@ struct route* determine_route(char* route_str) {
   char* ptr;
   
   while(r != NULL) {
-    rn = r->first;
+    rn = r->head;
     ptr = route_str;
     
     while(rn != NULL) {
@@ -95,7 +95,7 @@ struct route* determine_route(char* route_str) {
 }
 
 void set_params_for_route(struct route* route, char* route_str) {
-  struct rnode* rn = route->first;
+  struct rnode* rn = route->head;
   char* ptr = route_str;
   char* nexttext;
   int varlen;
@@ -157,12 +157,12 @@ static void add_var_rnode(struct route* route, char* varname, int varlen) {
 }
 
 static void add_rnode(struct route* route, struct rnode* rn) {  
-  if(route->first == NULL) {
-    route->first = rn;
+  if(route->head == NULL) {
+    route->head = rn;
   }
   else {
-    route->last->next = rn;
+    route->tail->next = rn;
   }
-  route->last = rn;
+  route->tail = rn;
 }
 
