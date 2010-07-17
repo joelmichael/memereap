@@ -48,7 +48,7 @@ struct route* parse_route_str(char* route_str) {
   }
   
   textlen = routelen - (lastptr - route_str);
-  add_text_rnode(route, ptr, textlen);
+  add_text_rnode(route, lastptr, textlen);
   
   return route;
 }

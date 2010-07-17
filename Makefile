@@ -10,16 +10,19 @@ public/memereap.fcgi:	lib/fastcgi.o lib/db.o lib/mysql.o lib/response.o lib/requ
 			views/user_views.o
 			cc $(LDFLAGS) -o $@ $^
 						
-check:	tests/bin/db_test tests/bin/user_test reload
+check:	tests/bin/db_test tests/bin/user_test tests/bin/routes_test reload
 	tests/bin/db_test
 	tests/bin/user_test
+	tests/bin/routes_test
 
 tests/bin/db_test:	tests/db_test.o lib/db.o lib/mysql.o
 			cc $(LDFLAGS) -o $@ $^
 
 tests/bin/user_test:	tests/user_test.o lib/db.o lib/mysql.o models/user.o
 			cc $(LDFLAGS) -o $@ $^
-				
+
+tests/bin/routes_test:	tests/routes_test.o lib/routes.o lib/request.o lib/response.o
+			cc $(LDFLAGS) -o $@ $^
 
 lib/mysql.o:	lib/mysql.c
 		cc $(CFLAGS) -I/opt/local/include/mysql5/mysql -c -o $@ $<
