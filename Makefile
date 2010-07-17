@@ -10,10 +10,10 @@ public/memereap.fcgi:	scythe/fastcgi.o scythe/db.o scythe/mysql.o scythe/respons
 			views/user_views.o
 			cc $(LDFLAGS) -o $@ $^
 						
-check:	tests/bin/db_test tests/bin/user_test tests/bin/routes_test reload
+check:	tests/bin/db_test tests/bin/user_test tests/bin/route_test reload
 	tests/bin/db_test
 	tests/bin/user_test
-	tests/bin/routes_test
+	tests/bin/route_test
 
 tests/bin/db_test:	tests/db_test.o scythe/db.o scythe/mysql.o
 			cc $(LDFLAGS) -o $@ $^
@@ -21,7 +21,7 @@ tests/bin/db_test:	tests/db_test.o scythe/db.o scythe/mysql.o
 tests/bin/user_test:	tests/user_test.o scythe/db.o scythe/mysql.o models/user.o
 			cc $(LDFLAGS) -o $@ $^
 
-tests/bin/routes_test:	tests/routes_test.o scythe/routes.o scythe/request.o scythe/response.o
+tests/bin/route_test:	tests/route_test.o scythe/routes.o scythe/request.o scythe/response.o
 			cc $(LDFLAGS) -o $@ $^
 
 scythe/mysql.o:	scythe/mysql.c
