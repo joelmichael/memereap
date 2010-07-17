@@ -8,4 +8,3 @@ RewriteRule ^([^.]+)$ $1.html [QSA]
 RewriteCond %{REQUEST_FILENAME} !-f
 
 RewriteRule ^(.*)$ memereap.fcgi [QSA,L]
-
