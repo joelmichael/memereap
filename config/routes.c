@@ -1,4 +1,4 @@
-#include "lib/routes.h"
+#include "scythe/routes.h"
 
 #include "controllers/user_controller.h"
 

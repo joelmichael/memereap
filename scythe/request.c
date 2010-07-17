@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "lib/response.h"
-#include "lib/routes.h"
+#include "scythe/response.h"
+#include "scythe/routes.h"
 
 struct param {
   char name[32];

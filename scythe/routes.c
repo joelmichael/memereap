@@ -2,7 +2,7 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include "lib/request.h"
+#include "scythe/request.h"
 
 static struct route* head_route;
 

@@ -3,7 +3,7 @@ LDFLAGS = -L/opt/local/lib/mysql5/mysql -lmysqlclient -L/opt/local/lib -lfcgi
 
 all:	public/memereap.fcgi
 
-public/memereap.fcgi:	lib/fastcgi.o lib/db.o lib/mysql.o lib/response.o lib/request.o lib/template.o lib/routes.o\
+public/memereap.fcgi:	scythe/fastcgi.o scythe/db.o scythe/mysql.o scythe/response.o scythe/request.o scythe/template.o scythe/routes.o\
 			config/routes.o\
 			models/user.o\
 			controllers/user_controller.o\
@@ -15,19 +15,19 @@ check:	tests/bin/db_test tests/bin/user_test tests/bin/routes_test reload
 	tests/bin/user_test
 	tests/bin/routes_test
 
-tests/bin/db_test:	tests/db_test.o lib/db.o lib/mysql.o
+tests/bin/db_test:	tests/db_test.o scythe/db.o scythe/mysql.o
 			cc $(LDFLAGS) -o $@ $^
 
-tests/bin/user_test:	tests/user_test.o lib/db.o lib/mysql.o models/user.o
+tests/bin/user_test:	tests/user_test.o scythe/db.o scythe/mysql.o models/user.o
 			cc $(LDFLAGS) -o $@ $^
 
-tests/bin/routes_test:	tests/routes_test.o lib/routes.o lib/request.o lib/response.o
+tests/bin/routes_test:	tests/routes_test.o scythe/routes.o scythe/request.o scythe/response.o
 			cc $(LDFLAGS) -o $@ $^
 
-lib/mysql.o:	lib/mysql.c
+scythe/mysql.o:	scythe/mysql.c
 		cc $(CFLAGS) -I/opt/local/include/mysql5/mysql -c -o $@ $<
 
-lib/fastcgi.o:	lib/fastcgi.c
+scythe/fastcgi.o:	scythe/fastcgi.c
 		cc $(CFLAGS) -I/opt/local/include -c -o $@ $<
 		
 config/routes.o:	config/routes.c
@@ -40,5 +40,5 @@ dump:
 	mysqldump -u root memereap_test > db/memereap_test.sql
 			
 clean:	
-	rm -f public/memereap.fcgi tests/bin/* lib/*.o config/*.o models/*.o controllers/*.o views/*.o tests/*.o
+	rm -f public/memereap.fcgi tests/bin/* scythe/*.o config/*.o models/*.o controllers/*.o views/*.o tests/*.o
 

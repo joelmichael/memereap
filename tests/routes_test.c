@@ -3,9 +3,9 @@
 #include <string.h>
 #include <assert.h>
 
-#include "lib/routes.h"
-#include "lib/request.h"
-#include "lib/response.h"
+#include "scythe/routes.h"
+#include "scythe/request.h"
+#include "scythe/response.h"
 
 void example_action1() {}
 void example_action2() {}

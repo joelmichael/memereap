@@ -1,8 +1,8 @@
 #include "user_views.h"
 
 #include <fcgi_stdio.h>
-#include "lib/response.h"
-#include "lib/template.h"
+#include "scythe/response.h"
+#include "scythe/template.h"
 
 static struct template* show_user_template;
 

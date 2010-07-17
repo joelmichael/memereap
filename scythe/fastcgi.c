@@ -1,8 +1,8 @@
 #include <fcgi_stdio.h>
 #include <stdlib.h>
-#include "lib/request.h"
-#include "lib/routes.h"
-#include "lib/db.h"
+#include "scythe/request.h"
+#include "scythe/routes.h"
+#include "scythe/db.h"
 
 int main(int argc, char** argv) {
   connect_db("memereap");

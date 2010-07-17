@@ -3,7 +3,7 @@
 #include <fcgi_stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lib/db.h"
+#include "scythe/db.h"
 
 // static
 

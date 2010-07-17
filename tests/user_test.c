@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "lib/db.h"
+#include "scythe/db.h"
 #include "models/user.h"
 
 void test_select_user() {

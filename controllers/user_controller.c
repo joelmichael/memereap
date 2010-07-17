@@ -1,7 +1,7 @@
 #include "user_controller.h"
 
-#include "lib/request.h"
-#include "lib/response.h"
+#include "scythe/request.h"
+#include "scythe/response.h"
 #include "models/user.h"
 #include "views/user_views.h"
 
