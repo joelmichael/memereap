@@ -23,7 +23,7 @@ struct tvar {
 
 struct template* parse_template(const char* filename);
 
-void add_tvar(const char* name, char* value);
+void set_tvar(const char* name, char* value);
 
 void print_template(struct template* template);
 

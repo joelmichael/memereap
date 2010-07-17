@@ -49,7 +49,7 @@ struct template* parse_template(const char* filename) {
   return template;
 }
 
-void add_tvar(const char* name, char* value) {
+void set_tvar(const char* name, char* value) {
   struct tvar* tv;
   
   tv = (struct tvar*)malloc(sizeof(struct tvar));
