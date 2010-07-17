@@ -6,9 +6,9 @@
 #include "lib/request.h"
 #include "lib/response.h"
 
-static void example_action1() {}
-static void example_action2() {}
-static void example_action3() {}
+void example_action1() {}
+void example_action2() {}
+void example_action3() {}
 
 void test_determine_route() {
   struct route* route;
