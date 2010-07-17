@@ -3,18 +3,18 @@
 
 #define VARNAME_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
 
+void process_request();
+
 void make_cookie_list();
 
-int get_cookie(char* buf, const char* name);
+char* get_cookie(char* name);
 
 void route_request();
 
-void process_request();
+int set_param(char* name, char* value);
 
-int add_param(char* name, char* value);
+char* get_param(char* name);
 
-int get_param(char* buf, const char* name);
-
-void free_param_lists();
+void free_params_and_cookies();
 
 #endif

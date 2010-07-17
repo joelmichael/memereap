@@ -3,6 +3,7 @@
 #include <fcgi_stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "request.h"
 
 #define LINE_MAX 512
 

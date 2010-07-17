@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "lib/response.h"
+#include "lib/routes.h"
 #include "controllers/user_controller.h"
 
 struct param {
@@ -16,14 +17,18 @@ struct param {
 static struct param* head_cookie;
 static struct param* head_param;
 
+void process_request() {
+  make_cookie_list();
+  route_request();
+  free_params_and_cookies();
+}
+
 void make_cookie_list() {
   char* ptr = getenv("HTTP_COOKIE");
   char* term;
   struct param* new_cookie;
   int len;
-  
-  free_cookie_list();
-  
+    
   if(ptr == NULL) {
     return;
   }
@@ -62,50 +67,36 @@ void make_cookie_list() {
   }
 }
 
-int get_cookie(char* buf, const char* name) {
+char* get_cookie(char* name) {
   struct param* c = head_cookie;
   
   while(c != NULL) {
     if(strcmp(c->name, name) == 0) {
-      strcpy(buf, c->value);
-      return 0;
+      return c->value;
     }
     c = c->next;
   }
   
-  return 1;
+  return NULL;
 }
 
 void route_request() {
   char* uri = getenv("REQUEST_URI");
+  struct route* route = determine_route(uri);
   
-  if(strstr(uri, "/users/new") == uri) {
-    //handle_new_user(method);
-  }
-  else if(strstr(uri, "/users/edit/") == uri) {
-    //handle_edit_user(uri+12, method);
-  }
-  else if(strstr(uri, "/users/") == uri) {
-    handle_show_user(uri+7);
-  }
-  else if(strstr(uri, "/users/delete/") == uri) {
-    //handle_delete_user(uri+14);
+  if(route != NULL) {
+    set_params_for_route(route, uri);
+    (*route->action)();
   }
   else {
     print_404();
   }
 }
 
-void process_request() {
-  free_param_lists();
-  make_cookie_list();
-  route_request();
-}
-
-int add_param(char* name, char* value) {
+int set_param(char* name, char* value) {
   struct param* new_param;
   
-  if(get_param(name) != 0) {
+  if(get_param(name) != NULL) {
     return 1;
   }
   else {
@@ -118,22 +109,20 @@ int add_param(char* name, char* value) {
   }
 }
 
-int get_param(char* buf, const char* name) {
+char* get_param(char* name) {
   struct param* p = head_param;
   
   while(p != NULL) {
-    if(strcpy(p->name, name) == 0) {
-      strcpy(buf, p->value);
-      return 0;
+    if(strcmp(p->name, name) == 0) {
+      return p->value;
     }
     p = p->next;
   }
   
-  return 1;
+  return NULL;
 }
 
-void free_param_lists() {
-  // frees both cookies and params
+void free_params_and_cookies() {
   struct param* p = head_param;
   struct param* oldp;
   

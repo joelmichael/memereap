@@ -1,2 +1,5 @@
 *.tmproj
 .DS_Store
+*.o
+
+
